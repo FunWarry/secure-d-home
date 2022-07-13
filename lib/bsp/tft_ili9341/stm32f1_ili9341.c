@@ -511,15 +511,23 @@ void ILI9341_Delay(volatile unsigned int delay) {
  */
 void ILI9341_Rotate(ILI9341_Orientation_t orientation) {
 	ILI9341_SendCommand(ILI9341_MAC);
+
+#if (ILI9341_WIDTH == 160)		//TFT 1.44"
+		ILI9341_SendData(0x68);
+		ILI9341_Opts.width = ILI9341_WIDTH;
+		ILI9341_Opts.height = ILI9341_HEIGHT;
+		ILI9341_Opts.orientation = ILI9341_Orientation_Portrait_1;
+#else
 	if (orientation == ILI9341_Orientation_Portrait_1) {
-		ILI9341_SendData(0x58);
-	} else if (orientation == ILI9341_Orientation_Portrait_2) {
-		ILI9341_SendData(0x88);
-	} else if (orientation == ILI9341_Orientation_Landscape_1) {
-		ILI9341_SendData(0x28);
-	} else if (orientation == ILI9341_Orientation_Landscape_2) {
-		ILI9341_SendData(0xE8);
-	}
+			ILI9341_SendData(0x58);
+		} else if (orientation == ILI9341_Orientation_Portrait_2) {
+			ILI9341_SendData(0x88);
+		} else if (orientation == ILI9341_Orientation_Landscape_1) {
+			ILI9341_SendData(0x28);
+		} else if (orientation == ILI9341_Orientation_Landscape_2) {
+			ILI9341_SendData(0xE8);
+		}
+
 	ILI9341_Opts.orientation = orientation;
 	if (orientation == ILI9341_Orientation_Portrait_1 || orientation == ILI9341_Orientation_Portrait_2) {
 		ILI9341_Opts.width = ILI9341_WIDTH;
@@ -528,6 +536,7 @@ void ILI9341_Rotate(ILI9341_Orientation_t orientation) {
 		ILI9341_Opts.width = ILI9341_HEIGHT;
 		ILI9341_Opts.height = ILI9341_WIDTH;
 	}
+#endif
 }
 
 /**

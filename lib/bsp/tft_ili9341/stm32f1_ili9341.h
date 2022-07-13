@@ -122,7 +122,7 @@ VCC          3.3V         Positive power supply
  - TM GPIO
 @endverbatim
  */
-
+#include "config.h"
 #include "stm32f1xx.h"
 #include "stm32f1xx_hal.h"
 #include "stm32f1_fonts.h"
@@ -170,9 +170,14 @@ VCC          3.3V         Positive power supply
 #endif
 
 /* LCD settings */
+#ifndef ILI9341_WIDTH
 #define ILI9341_WIDTH        240
+#endif
+#ifndef ILI9341_HEIGHT
 #define ILI9341_HEIGHT       320
-#define ILI9341_PIXEL        76800
+#endif
+
+#define ILI9341_PIXEL        (ILI9341_HEIGHT*ILI9341_WIDTH)
 
 /* Colors */
 #define ILI9341_COLOR_WHITE			0xFFFF
