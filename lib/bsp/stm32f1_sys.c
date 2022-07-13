@@ -98,6 +98,10 @@ void check_stack_occupation(void)
 void SYS_ClockConfig(void)
 {
 #if USE_MIDI
+#if MY_BLUEPILL_IS_COUNTERFEIT
+	#warning "certaines bluebill contrefaites semblent poser un pb de lancement d'un nouveau débogage lorsqu'un code tourne en HSE."
+	//si vous êtes dans ce cas là, que vous avez besoin du HSE (usage USB par exemple), tentez de relier le RESET au NRST de votre sonde de débogage...
+#endif
 	RCC_OscInitTypeDef RCC_OscInitStruct = {0};
 	 RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 	 RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};

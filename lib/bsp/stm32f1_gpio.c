@@ -9,7 +9,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f1_gpio.h"
 #include "stm32f1xx_hal.h"
-
+#include "config.h"
 /*
  * Ce module logiciel a pour but de simplifier l'utilisation des fonctions HAL_GPIO_...
  *
@@ -51,7 +51,12 @@ void BSP_GPIO_Enable(void)
 	__HAL_RCC_GPIOE_CLK_ENABLE();
 
 	__HAL_RCC_AFIO_CLK_ENABLE();
+
+#if !MY_BLUEPILL_IS_COUNTERFEIT
+	//Sur certaines bluepill contrefaites, il y a une mauvaise gestion du remap du JTAG... (notamment remarquée si l'oscillateur HSE est actif).
+	//Donc si vous avez vraiment besoin de PA15, réactivez ceci... mais éviter d'utiliser la macro USE_MIDI ou autre usage de l'USB qui nécessite le HSE.
 	__HAL_AFIO_REMAP_SWJ_NOJTAG();	//Pour pouvoir utiliser PA15 (et retirer l'affectation de cette broche au JTAG, non utilisé)
+#endif
 }
 
 
