@@ -67,7 +67,7 @@
 #define USE_BSP_TIMER			1 //Utilisation de stm32f1_timer.c/h
 
 
-#define USE_ADC					1
+#define USE_ADC					0
 	//Ces configurations permettent d'activer les entrées analogiques souhaitées.
 	//16 entrées analogiques peuvent être activées maximum.
 	//2 entrées analogiques doivent être activées minimum. (Vref est un choix possible si vous utilisez une seule entrée)
@@ -93,6 +93,8 @@
 
 #define USE_SCREEN_TFT_ILI9341		0	//Ecran TFT 2.4
 	#if USE_SCREEN_TFT_ILI9341
+		#define ILI9341_WIDTH		160
+		#define ILI9341_HEIGHT		128
 		#define USE_XPT2046			1	//Tactile
 
 		#define USE_FONT11x18		0
@@ -116,17 +118,17 @@
 #define USE_SENSOR_LPS22HB		0//Pression (et température)
 #define USE_MLX90614			0	//Capteur de température sans contact
 #define USE_MPU6050				0//Accéléromètre et Gyroscope
-#define USE_DHT11				1
+#define USE_DHT11				0
 
 #define USE_MATRIX_KEYBOARD		0
 #define USE_MATRIX_LED			0
 #define USE_CAPACITIVE_KEYBOARD	0
 #define USE_MATRIX_LED_32_32	0
-#define USE_FINGERPRINT			1
+#define USE_FINGERPRINT			0
 
 #define USE_MCP23S17			0 //Port expander I/O en SPI
 #define USE_MCP23017			0 //Port expander I/O en I2C
-#define USE_APDS9960			1	//Capteur de gestes, de couleur, de luminosité ambiante
+#define USE_APDS9960			0	//Capteur de gestes, de couleur, de luminosité ambiante
 #define USE_BH1750FVI			0	//Capteur de luminosité ambiante
 #define USE_BMP180				0	//Capteur de pression
 #define USE_MOTOR_DC			0
@@ -134,17 +136,17 @@
 #define USE_RTC					0
 #define USE_PWM					0
 #define USE_ESP8266				0//Module Wifi
-#define USE_NFC03A1				1
+#define USE_NFC03A1				0
 #define USE_EPAPER				0
 #define	USE_GPS					0
 #define USE_HCSR04				0
 #define USE_HX711				0
 #define USE_DAC_MCP4921			0
-#define USE_IR_EMITTER			1
-#define USE_IR_RECEIVER			1
+#define USE_IR_EMITTER			0
+#define USE_IR_RECEIVER			0
 #define USE_IR_RECEIVER_NEC		0
-#define USE_DS18B20				1
-#define USE_MIDI				1
+#define USE_DS18B20				0
+#define USE_MIDI				0
 #define	USE_VL53L0				0
 #if USE_VL53L0
 	#define VL53L0X_I2C				I2C1
@@ -167,7 +169,7 @@
 	#define EPAPER_SPI			SPI1
 #endif
 
-#define USE_SD_CARD				1	//Utilisation d'une carte SD pour lire/écrire des fichiers
+#define USE_SD_CARD				0	//Utilisation d'une carte SD pour lire/écrire des fichiers
 
 #define USE_DIALOG				0	//Module logiciel permettant le dialogue entre plusieurs entités selon unn protocole maison générique.
 
