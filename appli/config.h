@@ -10,8 +10,8 @@
 #include "stm32f1xx_hal.h"
 
 //Choix de la cible utilisée.
-#define NUCLEO	1
-#define BLUEPILL 0
+#define NUCLEO	0
+#define BLUEPILL 1
 
 #define MY_BLUEPILL_IS_COUNTERFEIT	BLUEPILL
 
@@ -49,9 +49,6 @@
 #define UART3_ON_PB10_PB11
 //#define UART3_ON_PD8_PD9
 
-//Choisir les broches pour le SPI1, parmi ces deux possibilités :
-#define SPI1_ON_PA5_PA6_PA7		1
-#define SPI1_ON_PB3_PB4_PB5		0
 
 //_______________________________________________________
 
@@ -91,15 +88,24 @@
 	#define USE_AN17		1	//Vref
 
 
-#define USE_SCREEN_TFT_ILI9341		0	//Ecran TFT 2.4
+#define USE_SCREEN_TFT_ILI9341		1	//Ecran TFT 2.4
 	#if USE_SCREEN_TFT_ILI9341
-		#define ILI9341_WIDTH		160
-		#define ILI9341_HEIGHT		128
 		#define USE_XPT2046			1	//Tactile
 
 		#define USE_FONT11x18		0
 		#define USE_FONT7x10		1
 		#define USE_FONT16x26		0
+
+		#if BLUEPILL					//Définition des broches CS, WRX et RST pour la BLUEPILL
+			#define ILI9341_CS_PORT       GPIOB
+			#define ILI9341_CS_PIN        GPIO_PIN_11
+
+			#define ILI9341_WRX_PORT      GPIOB
+			#define ILI9341_WRX_PIN       GPIO_PIN_1
+
+			#define ILI9341_RST_PORT      GPIOB
+			#define ILI9341_RST_PIN       GPIO_PIN_10
+		#endif /* BLUEPILL */
 	#endif
 
 
@@ -184,6 +190,8 @@
 //Liste des modules utilisant le périphérique SPI
 #if USE_SCREEN_TFT_ILI9341	|| USE_SD_CARD
 	#define USE_SPI				1
+	#define SPI1_ON_PA5_PA6_PA7		1
+	#define SPI1_ON_PB3_PB4_PB5		0
 #endif
 
 #if USE_IR_EMITTER || USE_MOTOR_DC
