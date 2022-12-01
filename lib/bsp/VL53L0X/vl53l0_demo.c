@@ -130,7 +130,7 @@ bool_e VL53L0X_init(void){
 		BSP_GPIO_PinCfg(sensor_reset_pins[id].GPIO_Port, sensor_reset_pins[id].GPIO_Pin,GPIO_MODE_OUTPUT_PP, GPIO_NOPULL, GPIO_SPEED_FREQ_HIGH);
 		HAL_GPIO_WritePin(sensor_reset_pins[id].GPIO_Port, sensor_reset_pins[id].GPIO_Pin, VL53_RESET_STATE);
 	}
-	I2C_Init(VL53L0X_I2C, 400000);		//TODO 400000
+	I2C_Init(VL53L0X_I2C, 400000, TRUE);		//TODO 400000
 
 	return TRUE;
 }

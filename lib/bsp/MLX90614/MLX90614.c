@@ -50,7 +50,7 @@
 //Initialisation du capteur de température et de la vitesse d'horloge
 void MLX90614_init(void)
 {
-	I2C_Init(MLX90614_I2C, 100000);
+	I2C_Init(MLX90614_I2C, 100000, TRUE);
 }
 
 

@@ -44,9 +44,10 @@ void HAL_I2C_ClearBusyFlagErrata_2_14_7(I2C_HandleTypeDef *hi2c);
  * @brief  Initializes I2C
  * @param  *I2Cx: I2C used
  * @param  clockSpeed: Clock speed for SCL in Hertz
+ * @param : remap if remap==1 (and I2Cx is I2C1) -> ports are PB8 & PB9. Else, I2C1 is on PB6 PB7
  * @retval None
  */
-HAL_StatusTypeDef I2C_Init(I2C_TypeDef* I2Cx, uint32_t clockSpeed)
+HAL_StatusTypeDef I2C_Init(I2C_TypeDef* I2Cx, uint32_t clockSpeed, bool_e remap)
 {
 	assert(I2Cx == I2C1 || I2Cx == I2C2);
 	I2C_ID_e id = ((I2Cx == I2C2)?I2C2_ID:I2C1_ID);
@@ -73,15 +74,19 @@ HAL_StatusTypeDef I2C_Init(I2C_TypeDef* I2Cx, uint32_t clockSpeed)
 		__HAL_RCC_AFIO_CLK_ENABLE();
 		__HAL_RCC_I2C1_CLK_ENABLE();
 		__HAL_RCC_GPIOB_CLK_ENABLE();
-		#if I2C1_ON_PB6_PB7
+		if(remap)
+		{
+			//I2C1 sur PB8 et PB9.
+			__HAL_AFIO_REMAP_I2C1_ENABLE();		
+			BSP_GPIO_PinCfg(GPIOB, GPIO_PIN_8, GPIO_MODE_AF_OD, GPIO_PULLUP, GPIO_SPEED_FREQ_MEDIUM);
+			BSP_GPIO_PinCfg(GPIOB, GPIO_PIN_9, GPIO_MODE_AF_OD, GPIO_PULLUP, GPIO_SPEED_FREQ_MEDIUM);
+		}
+		else
+		{
 			//I2C1 sur PB6 et PB7
 			BSP_GPIO_PinCfg(GPIOB, GPIO_PIN_6, GPIO_MODE_AF_OD, GPIO_PULLUP, GPIO_SPEED_FREQ_MEDIUM);
 			BSP_GPIO_PinCfg(GPIOB, GPIO_PIN_7, GPIO_MODE_AF_OD, GPIO_PULLUP, GPIO_SPEED_FREQ_MEDIUM);
-		#else
-			__HAL_AFIO_REMAP_I2C1_ENABLE();		//I2C1 sur PB8 et PB9.
-			BSP_GPIO_PinCfg(GPIOB, GPIO_PIN_8, GPIO_MODE_AF_OD, GPIO_PULLUP, GPIO_SPEED_FREQ_MEDIUM);
-			BSP_GPIO_PinCfg(GPIOB, GPIO_PIN_9, GPIO_MODE_AF_OD, GPIO_PULLUP, GPIO_SPEED_FREQ_MEDIUM);
-		#endif
+		}
 	}
 	else
 	{

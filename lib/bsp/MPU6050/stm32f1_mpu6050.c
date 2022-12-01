@@ -115,7 +115,7 @@ MPU6050_Result_t MPU6050_Init(MPU6050_t* DataStruct, GPIO_TypeDef * GPIOx, uint1
 	DataStruct->Address = MPU6050_I2C_ADDR | (uint8_t)DeviceNumber;
 
 	/* Initialize I2C */
-	I2C_Init(MPU6050_I2C, MPU6050_I2C_CLOCK);
+	I2C_Init(MPU6050_I2C, MPU6050_I2C_CLOCK, TRUE);
 
 	/* Check if device is connected */
 	if (!I2C_IsDeviceConnected(MPU6050_I2C, DataStruct->Address)) {

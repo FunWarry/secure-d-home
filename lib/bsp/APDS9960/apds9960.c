@@ -201,7 +201,7 @@ bool_e APDS9960_init() {
 	gesture_motion_ = DIR_NONE;
 
     /* Initialize I2C */
-    I2C_Init(APDS9960_I2C, 100000);
+    I2C_Init(APDS9960_I2C, 100000, TRUE);
 
     /* Read ID register and check against known values for APDS-9960 */
     wireReadDataByte(APDS9960_ID, &id);

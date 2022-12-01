@@ -307,7 +307,7 @@ int XNUCLEO53L0A1_I2C1Configure() {
     return status;
 #endif
 
-    I2C_Init(I2C1, 100000);
+    I2C_Init(I2C1, 100000, TRUE);
 
     return HAL_OK;
 }

@@ -414,7 +414,7 @@
 		MCP23017_ic[id].I2Cx = I2Cx;
 		MCP23017_ic[id].used = TRUE;
 
-		return I2C_Init(I2Cx, DEFAULT_CLOCK_SPEED);
+		return I2C_Init(I2Cx, DEFAULT_CLOCK_SPEED, TRUE);
 
 		/*if(MCP23017_setIO(id, MCP23017_PORT_A, 0xFF, MCP23017_DIRECTION_INPUT) == FALSE){
 			MCP23017_ic[id].used = FALSE;

@@ -182,10 +182,13 @@
 //Liste des modules utilisant le périphérique I2C
 #if USE_MLX90614 || USE_MPU6050	|| USE_APDS9960	 || USE_BH1750FVI || USE_BMP180 || USE_MCP23017 || USE_VL53L0
 	#define USE_I2C				1
+#else
+	#ifndef USE_I2C
+		#define USE_I2C		0
+	#endif
 #endif
 #define I2C_TIMEOUT				5	//ms
 
-#define I2C1_ON_PB6_PB7			0
 
 //Liste des modules utilisant le périphérique SPI
 #if USE_SCREEN_TFT_ILI9341	|| USE_SD_CARD

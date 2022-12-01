@@ -13,6 +13,7 @@
 #include "stm32f1_sys.h"
 #include "macro_types.h"
 #include "stm32f1xx_hal.h"
+#include "stm32f1_gpio.h"
 #include <errno.h>
 #include <sys/stat.h>
 #include <sys/times.h>

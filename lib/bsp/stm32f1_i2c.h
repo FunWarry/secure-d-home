@@ -41,7 +41,7 @@
 
 #include "stm32f1xx_hal.h"
 
-HAL_StatusTypeDef I2C_Init(I2C_TypeDef* I2Cx, uint32_t clockSpeed);
+HAL_StatusTypeDef I2C_Init(I2C_TypeDef* I2Cx, uint32_t clockSpeed, bool_e remap);
 
 HAL_StatusTypeDef I2C_Read(I2C_TypeDef* I2Cx, uint8_t address, uint8_t reg, uint8_t * received_data);
 

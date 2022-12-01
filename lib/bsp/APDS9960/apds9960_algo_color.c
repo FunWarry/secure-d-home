@@ -8,7 +8,7 @@
 #include "macro_types.h"
 #include "apds9960.h"
 
-uint16_t searchMin(int32_t values[], uint16_t nbValue){
+uint16_t APDS9960_searchMin(int32_t values[], uint16_t nbValue){
 	uint8_t i, indiceMin = 0;
 	for(i=0; i<nbValue; i++){
 		if(values[i] < values[indiceMin]){
@@ -159,7 +159,7 @@ static colorSensor_e SENSOR_analyse_color(void)
 		nb++;
 	
 
-		Uint8 indiceMin = searchMin(colors_value, nb);
+		Uint8 indiceMin = APDS9960_searchMin(colors_value, nb);
 		color = colors_id[indiceMin];
 	}
 

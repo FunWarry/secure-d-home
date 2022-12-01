@@ -82,7 +82,7 @@ void BH1750FVI_demo()
  */
 void BH1750FVI_init()
 {
-	I2C_Init(BH1750FVI_I2C, 100000);
+	I2C_Init(BH1750FVI_I2C, 100000, TRUE);
 }
 
 /**
