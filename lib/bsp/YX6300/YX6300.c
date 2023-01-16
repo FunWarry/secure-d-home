@@ -1,19 +1,20 @@
 #include "config.h"
 #if USE_YX6300
-#error "code en ébauche, non testé, non terminé"
 
+	#warning "ce code est à l'état d'ébauche, non testé, non terminé"
+	#warning "vous êtes invités à remonter toute suggestion de complétion ou d'amélioration !"
 
 
 #ifndef YX6300_UART_ID
-#define YX6300_UART_ID	UART1_ID
+	#define YX6300_UART_ID	UART1_ID
 #endif
 
 
 #define FIRST_SONG	0x01
-#define FIRST_SONG	0x03
+#define PLAY_WITH_INDEX	0x03
 
 
-void example(void)
+void YX6300_demo(void)
 {
 	
 	uint8_t data[2];
