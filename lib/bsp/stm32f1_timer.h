@@ -46,9 +46,9 @@ void TIMER_set_period(timer_id_e timer_id, uint16_t period);
 
 void TIMER_set_prescaler(timer_id_e timer_id, uint16_t prescaler);
 
-void TIMER_enable_PWM(timer_id_e timer_id, uint16_t TIM_CHANNEL_x, uint16_t duty, bool_e remap, bool_e negative_channel);
+void TIMER_enable_PWM(timer_id_e timer_id, uint32_t TIM_CHANNEL_x, uint16_t duty, bool_e remap, bool_e negative_channel);
 
-void TIMER_set_duty(timer_id_e timer_id, uint16_t TIM_CHANNEL_x, uint16_t duty);
+void TIMER_set_duty(timer_id_e timer_id, uint32_t TIM_CHANNEL_x, uint16_t duty);
 
 
 /**

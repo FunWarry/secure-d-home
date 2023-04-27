@@ -9,7 +9,7 @@
  * Ce module logiciel est destiné au pilotage de moteur DC à travers un pont en H BD6221F-E2
  * 	(ou modèle similaire en terme de signaux de commande)
  *
- * Ce module utilise le pilote stm32f1_pwm.h
+ * Ce module utilise le pilote stm32f1_timer.h pour générer les signaux pwm.
  *
  * Table de vérité des signaux de commande de ce pont en H BD6221 :
  * 	(lorsque l'entrée Vref est reliée à Vcc)
@@ -67,7 +67,7 @@
 #include "config.h"
 #if USE_MOTOR_DC
 #include "stm32f1_motorDC.h"
-#include "stm32f1_pwm.h"
+#include "stm32f1_timer.h"
 #include "stm32f1_gpio.h"
 #include "stm32f1xx_hal.h"
 
@@ -102,6 +102,32 @@ static motor_t motors[MOTOR_NB];
 static running_e MOTOR_gpio_and_pin_to_pwm_channel(GPIO_TypeDef * gpio, uint16_t pin, pwm_channel_t * pwm_channel);
 
 
+void MOTOR_demo(void)
+{
+	//cette démo montre un exemple d'utilisation de ce module logiciel.
+	//Pour consulter une autre démo, plus complète (et complexe... et belle), RDV dans la fonction MOTOR_demo_with_manual_drive
+	static motor_id_e left_motor_id;
+	static motor_id_e right_motor_id;
+
+	//déclaration des moteurs, et initialisation des broches/périphériques correspondants.
+	left_motor_id = MOTOR_add(GPIOA, GPIO_PIN_8, GPIOB, GPIO_PIN_13);	//le choix des broches est stratégiques : elles doivent correspondre à des TIMERS !
+	right_motor_id = MOTOR_add(GPIOA, GPIO_PIN_9, GPIOB, GPIO_PIN_14);
+
+	if(left_motor_id == MOTOR_ID_NONE || right_motor_id == MOTOR_ID_NONE)
+		printf("un problème a eu lieu lors de l'initialisation du moteur, attrapez le débogueur et au boulot !\n");
+
+	//Attention, cette fonction inclut cette boucle blocante (très pratique pour une démo, mais très crade pour votre application !)
+	while(1)
+	{
+		static int16_t duty = 0;
+
+		duty = (duty>=100)?duty+10:-100;		//duty augmente de 10 en 10 jusqu'à +100 et rejoint ensuite -100
+		MOTOR_set_duty(left_motor_id, duty);
+		MOTOR_set_duty(right_motor_id, -duty);
+		HAL_Delay(100);							//attente blocante : ne faites pas ceci dans vos projets... sauf pour des fonctions de tests / temporaires.
+	}
+}
+
 /**
  * @brief 	Cette fonction est une machine a etat qui présente un exemple d'utilisation de ce module.
  * @func 	running_e DEMO_MOTOR_statemachine (bool_e ask_for_finish, char touch_pressed)
@@ -110,7 +136,7 @@ static running_e MOTOR_gpio_and_pin_to_pwm_channel(GPIO_TypeDef * gpio, uint16_t
  * @return	cette fonction retourne un element de l'enumeration running_e (END_OK= l'application est quittee avec succes ou IN_PROGRESS= l'application est toujours en cours)
  * @example DEMO_MOTOR_statemachine(FALSE, UART_get_next_byte(UART2_ID));
  */
-running_e DEMO_MOTOR_statemachine (bool_e ask_for_finish, char touch_pressed)
+running_e MOTOR_demo_with_manual_drive (bool_e ask_for_finish, char touch_pressed)
 {
 	typedef enum
 	{
@@ -221,8 +247,12 @@ motor_id_e MOTOR_add(GPIO_TypeDef * gpio_forward, uint16_t pin_forward, GPIO_Typ
 				MOTOR_gpio_and_pin_to_pwm_channel(gpio_reverse, pin_reverse, &motors[id].reverse) == END_OK)
 			{
 				motors[id].enable = TRUE;
-				PWM_run(motors[id].forward.timer_id, motors[id].forward.tim_channel,motors[id].forward.negative,PWM_PERIOD,0, motors[id].forward.remap);
-				PWM_run(motors[id].reverse.timer_id, motors[id].reverse.tim_channel,motors[id].reverse.negative,PWM_PERIOD,0, motors[id].reverse.remap);
+				TIMER_run_us(motors[id].forward.timer_id, PWM_PERIOD, FALSE);
+				if(motors[id].forward.timer_id != motors[id].reverse.timer_id)
+					TIMER_run_us(motors[id].reverse.timer_id, PWM_PERIOD, FALSE);
+				TIMER_enable_PWM(motors[id].forward.timer_id, motors[id].forward.tim_channel, 0, motors[id].forward.remap, motors[id].forward.negative);
+				TIMER_enable_PWM(motors[id].reverse.timer_id, motors[id].reverse.tim_channel, 0, motors[id].reverse.remap, motors[id].reverse.negative);
+
 				debug_printf("\tforward - sur le timer %d - channel %ld%s%s\n",  motors[id].forward.timer_id+1, motors[id].forward.tim_channel/4+1, (motors[id].forward.negative)?" negative":"", (motors[id].forward.remap)?" (remap)":"");
 				debug_printf("\treverse - sur le timer %d - channel %ld%s%s\n",  motors[id].reverse.timer_id+1, motors[id].reverse.tim_channel/4+1, (motors[id].reverse.negative)?" negative":"", (motors[id].reverse.remap)?" (remap)":"");
 			}
@@ -361,13 +391,13 @@ void MOTOR_set_duty(motor_id_e id, int16_t duty)
 	{
 		duty = (int16_t)(-duty);
 		motors[id].forward.func_stop(motors[id].forward.handler, motors[id].forward.tim_channel);
-		PWM_set_duty(motors[id].reverse.timer_id, motors[id].reverse.tim_channel, (uint32_t)duty);
+		TIMER_set_duty(motors[id].reverse.timer_id, motors[id].reverse.tim_channel, (uint16_t)duty);
 		motors[id].reverse.func_start(motors[id].reverse.handler, motors[id].reverse.tim_channel);
 	}
 	else
 	{
 		motors[id].reverse.func_stop(motors[id].reverse.handler, motors[id].reverse.tim_channel);
-		PWM_set_duty(motors[id].forward.timer_id, motors[id].forward.tim_channel, (uint32_t)duty);
+		TIMER_set_duty(motors[id].forward.timer_id, motors[id].forward.tim_channel, (uint16_t)duty);
 		motors[id].forward.func_start(motors[id].forward.handler, motors[id].forward.tim_channel);
 	}
 }

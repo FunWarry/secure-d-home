@@ -14,10 +14,10 @@
 #include "systick.h"
 
 #include "ir_emmiter.h"
-#include "stm32f1_pwm.h"
+#include "stm32f1_timer.h"
 
-#define pwm_off() 	PWM_set_duty(IR_EMITTER_TIMER, IR_EMITTER_CHANNEL, 0)
-#define pwm_on() 	PWM_set_duty(IR_EMITTER_TIMER, IR_EMITTER_CHANNEL, 50)
+#define pwm_off() 	TIMER_set_duty(IR_EMITTER_TIMER, IR_EMITTER_CHANNEL, 0)
+#define pwm_on() 	TIMER_set_duty(IR_EMITTER_TIMER, IR_EMITTER_CHANNEL, 50)
 
 /*	Pour tester en bouchonnage sans LED IR ni TSOP32238, on peut utiliser directement :
 #define pwm_off() 	PWM_set_duty(IR_EMITTER_TIMER, IR_EMITTER_CHANNEL, 100)
@@ -29,7 +29,8 @@ static void EMITTER_process_ms(void);
 
 void EMITTER_init(void)
 {
-	PWM_run(IR_EMITTER_TIMER,IR_EMITTER_CHANNEL, FALSE, 27, 0, FALSE);	//27us pour f = 37kHz
+	TIMER_run_us(IR_EMITTER_TIMER, 27, FALSE);	//27us pour f = 37kHz
+	TIMER_enable_PWM(IR_EMITTER_TIMER, IR_EMITTER_CHANNEL, 0, FALSE, FALSE);
 
 	//On ajoute la fonction process_ms à la liste des fonctions appelées automatiquement chaque ms par la routine d'interruption du périphérique SYSTICK
 	Systick_add_callback_function(&EMITTER_process_ms);

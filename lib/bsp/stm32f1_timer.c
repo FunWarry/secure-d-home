@@ -6,7 +6,7 @@
    */
 #include "stm32f1_timer.h"
 #include "stm32f1xx_hal.h"
-
+#include "stm32f1_gpio.h"
 
 #if USE_BSP_TIMER
 
@@ -134,7 +134,7 @@ void TIMER_set_prescaler(timer_id_e timer_id, uint16_t prescaler)
 	__HAL_TIM_SET_PRESCALER(&TIMER_HandleStructure[timer_id], prescaler - 1);
 }
 
-void TIMER_enable_PWM(timer_id_e timer_id, uint16_t TIM_CHANNEL_x, uint16_t duty, bool_e remap, bool_e negative_channel)
+void TIMER_enable_PWM(timer_id_e timer_id, uint32_t TIM_CHANNEL_x, uint16_t duty, bool_e remap, bool_e negative_channel)
 {
 	switch(timer_id)
 	{
@@ -235,7 +235,7 @@ void TIMER_enable_PWM(timer_id_e timer_id, uint16_t TIM_CHANNEL_x, uint16_t duty
  * 				1000 = 100%
  * 				0 = 0%
  */
-void TIMER_set_duty(timer_id_e timer_id, uint16_t TIM_CHANNEL_x, uint16_t duty)
+void TIMER_set_duty(timer_id_e timer_id, uint32_t TIM_CHANNEL_x, uint16_t duty)
 {
 	duty = MIN(1000,duty);	//Ecretage... Le rapport cyclique ne peut donc pas être plus grand que 1000 !
 	duty = (uint16_t)((((uint32_t)(duty))*(TIMER_HandleStructure[timer_id].Init.Period+1))/1000U);

@@ -22,7 +22,9 @@ typedef enum
 	MOTOR_ID_NONE =-1
 }motor_id_e;
 
-running_e DEMO_MOTOR_statemachine (bool_e ask_for_finish, char touch_pressed);
+void MOTOR_demo(void);
+
+running_e MOTOR_demo_with_manual_drive (bool_e ask_for_finish, char touch_pressed);
 
 motor_id_e MOTOR_add(GPIO_TypeDef * gpio_forward, uint16_t pin_forward, GPIO_TypeDef * gpio_reverse, uint16_t pin_reverse);
 
