@@ -34,12 +34,15 @@
 #ifndef TM_I2C_H
 #define TM_I2C_H 161
 #include "macro_types.h"
+#include "config.h"
 /**
  * @addtogroup TM_STM32F4xx_Libraries
  * @{
  */
 
 #include "stm32f1xx_hal.h"
+
+
 
 HAL_StatusTypeDef I2C_Init(I2C_TypeDef* I2Cx, uint32_t clockSpeed, bool_e remap);
 
@@ -63,6 +66,17 @@ bool_e I2C_IsDeviceConnected(I2C_TypeDef* I2Cx, uint8_t address);
 
 I2C_HandleTypeDef * I2C_get_handle(I2C_TypeDef* I2Cx);
 
+typedef enum
+{
+	I2C1_NORMAL,
+	I2C2_NORMAL,
+	I2C_NB,
+	I2C1_REMAP,
+}I2C_id_e;
+
+#if I2C_ON_MULTIPLE_PINS
+	I2C_TypeDef * i2c_id_to_periph(I2C_id_e i2c);
+#endif
 
 #endif
 

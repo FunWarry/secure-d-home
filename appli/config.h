@@ -188,7 +188,7 @@
 	#endif
 #endif
 #define I2C_TIMEOUT				5	//ms
-
+#define I2C_ON_MULTIPLE_PINS	0	//astuce permettant de rediriger à la demande le bus I2C vers les broches de remap. Réservé aux utilisateurs avertis.
 
 //Liste des modules utilisant le périphérique SPI
 #if USE_SCREEN_TFT_ILI9341	|| USE_SD_CARD

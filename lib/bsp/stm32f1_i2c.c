@@ -31,12 +31,7 @@
 #define I2C_ACK_ENABLE         1
 #define I2C_ACK_DISABLE        0
 
-typedef enum
-{
-	I2C1_ID = 0,
-	I2C2_ID,
-	I2C_NB
-}I2C_ID_e;
+
 
 static I2C_HandleTypeDef  hi2c[I2C_NB];
 void HAL_I2C_ClearBusyFlagErrata_2_14_7(I2C_HandleTypeDef *hi2c);
@@ -50,7 +45,7 @@ void HAL_I2C_ClearBusyFlagErrata_2_14_7(I2C_HandleTypeDef *hi2c);
 HAL_StatusTypeDef I2C_Init(I2C_TypeDef* I2Cx, uint32_t clockSpeed, bool_e remap)
 {
 	assert(I2Cx == I2C1 || I2Cx == I2C2);
-	I2C_ID_e id = ((I2Cx == I2C2)?I2C2_ID:I2C1_ID);
+	I2C_id_e id = ((I2Cx == I2C2)?I2C2_NORMAL:I2C1_NORMAL);
 
 	hi2c[id].Instance = I2Cx;
 	hi2c[id].Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
@@ -69,7 +64,16 @@ HAL_StatusTypeDef I2C_Init(I2C_TypeDef* I2Cx, uint32_t clockSpeed, bool_e remap)
 	//+ activer ceci :
 	//HAL_I2C_ClearBusyFlagErrata_2_14_7(&hi2c[id]);
 
-	if(id == I2C1_ID)
+	if(id == I2C2_NORMAL)
+	{
+		__HAL_RCC_AFIO_CLK_ENABLE();
+		__HAL_RCC_I2C2_CLK_ENABLE();
+		__HAL_RCC_GPIOB_CLK_ENABLE();
+		//I2C2 sur PB10 et PB11.
+		BSP_GPIO_PinCfg(GPIOB, GPIO_PIN_10, GPIO_MODE_AF_OD, GPIO_PULLUP, GPIO_SPEED_FREQ_MEDIUM);
+		BSP_GPIO_PinCfg(GPIOB, GPIO_PIN_11, GPIO_MODE_AF_OD, GPIO_PULLUP, GPIO_SPEED_FREQ_MEDIUM);
+	}
+	else
 	{
 		__HAL_RCC_AFIO_CLK_ENABLE();
 		__HAL_RCC_I2C1_CLK_ENABLE();
@@ -87,15 +91,6 @@ HAL_StatusTypeDef I2C_Init(I2C_TypeDef* I2Cx, uint32_t clockSpeed, bool_e remap)
 			BSP_GPIO_PinCfg(GPIOB, GPIO_PIN_6, GPIO_MODE_AF_OD, GPIO_PULLUP, GPIO_SPEED_FREQ_MEDIUM);
 			BSP_GPIO_PinCfg(GPIOB, GPIO_PIN_7, GPIO_MODE_AF_OD, GPIO_PULLUP, GPIO_SPEED_FREQ_MEDIUM);
 		}
-	}
-	else
-	{
-		__HAL_RCC_AFIO_CLK_ENABLE();
-		__HAL_RCC_I2C2_CLK_ENABLE();
-		__HAL_RCC_GPIOB_CLK_ENABLE();
-		//I2C2 sur PB10 et PB11.
-		BSP_GPIO_PinCfg(GPIOB, GPIO_PIN_10, GPIO_MODE_AF_OD, GPIO_PULLUP, GPIO_SPEED_FREQ_MEDIUM);
-		BSP_GPIO_PinCfg(GPIOB, GPIO_PIN_11, GPIO_MODE_AF_OD, GPIO_PULLUP, GPIO_SPEED_FREQ_MEDIUM);
 	}
 
 
@@ -236,7 +231,7 @@ void HAL_I2C_ClearBusyFlagErrata_2_14_7(I2C_HandleTypeDef *hi2c) {
 HAL_StatusTypeDef I2C_Read16(I2C_TypeDef* I2Cx, uint16_t address, uint8_t reg, uint8_t * received_data)
 {
 	assert(I2Cx == I2C1 || I2Cx == I2C2);
-	I2C_ID_e id = ((I2Cx == I2C2)?I2C2_ID:I2C1_ID);
+	I2C_id_e id = ((I2Cx == I2C2)?I2C2_NORMAL:I2C1_NORMAL);
 	return HAL_I2C_Mem_Read(&hi2c[id],address,reg,I2C_MEMADD_SIZE_16BIT,received_data,1,I2C_TIMEOUT);
 }
 
@@ -251,7 +246,7 @@ HAL_StatusTypeDef I2C_Read16(I2C_TypeDef* I2Cx, uint16_t address, uint8_t reg, u
 HAL_StatusTypeDef I2C_Read(I2C_TypeDef* I2Cx, uint8_t address, uint8_t reg, uint8_t * received_data)
 {
 	assert(I2Cx == I2C1 || I2Cx == I2C2);
-	I2C_ID_e id = ((I2Cx == I2C2)?I2C2_ID:I2C1_ID);
+	I2C_id_e id = ((I2Cx == I2C2)?I2C2_NORMAL:I2C1_NORMAL);
 	return HAL_I2C_Mem_Read(&hi2c[id],address,reg,I2C_MEMADD_SIZE_8BIT,received_data,1,I2C_TIMEOUT);
 }
 
@@ -268,7 +263,7 @@ HAL_StatusTypeDef I2C_Read(I2C_TypeDef* I2Cx, uint8_t address, uint8_t reg, uint
 HAL_StatusTypeDef I2C_ReadMulti(I2C_TypeDef* I2Cx, uint8_t address, uint8_t reg, uint8_t* data, uint16_t count)
 {
 	assert(I2Cx == I2C1 || I2Cx == I2C2);
-	I2C_ID_e id = ((I2Cx == I2C2)?I2C2_ID:I2C1_ID);
+	I2C_id_e id = ((I2Cx == I2C2)?I2C2_NORMAL:I2C1_NORMAL);
 	return HAL_I2C_Mem_Read(&hi2c[id],address,reg,I2C_MEMADD_SIZE_8BIT,data,count,I2C_TIMEOUT);
 }
 
@@ -281,7 +276,7 @@ HAL_StatusTypeDef I2C_ReadMulti(I2C_TypeDef* I2Cx, uint8_t address, uint8_t reg,
 HAL_StatusTypeDef I2C_ReadNoRegister(I2C_TypeDef* I2Cx, uint8_t address, uint8_t * data)
 {
 	assert(I2Cx == I2C1 || I2Cx == I2C2);
-	I2C_ID_e id = ((I2Cx == I2C2)?I2C2_ID:I2C1_ID);
+	I2C_id_e id = ((I2Cx == I2C2)?I2C2_NORMAL:I2C1_NORMAL);
 	return HAL_I2C_Master_Receive(&hi2c[id],address,data,1,I2C_TIMEOUT);
 }
 
@@ -296,7 +291,7 @@ HAL_StatusTypeDef I2C_ReadNoRegister(I2C_TypeDef* I2Cx, uint8_t address, uint8_t
 HAL_StatusTypeDef I2C_ReadMultiNoRegister(I2C_TypeDef* I2Cx, uint8_t address, uint8_t* data, uint16_t count)
 {
 	assert(I2Cx == I2C1 || I2Cx == I2C2);
-	I2C_ID_e id = ((I2Cx == I2C2)?I2C2_ID:I2C1_ID);
+	I2C_id_e id = ((I2Cx == I2C2)?I2C2_NORMAL:I2C1_NORMAL);
 	return HAL_I2C_Master_Receive(&hi2c[id],address,data,count,I2C_TIMEOUT);
 }
 
@@ -311,7 +306,7 @@ HAL_StatusTypeDef I2C_ReadMultiNoRegister(I2C_TypeDef* I2Cx, uint8_t address, ui
 HAL_StatusTypeDef I2C_Write(I2C_TypeDef* I2Cx, uint8_t address, uint8_t reg, uint8_t data)
 {
 	assert(I2Cx == I2C1 || I2Cx == I2C2);
-	I2C_ID_e id = ((I2Cx == I2C2)?I2C2_ID:I2C1_ID);
+	I2C_id_e id = ((I2Cx == I2C2)?I2C2_NORMAL:I2C1_NORMAL);
 
 	return HAL_I2C_Mem_Write(&hi2c[id],address,reg,I2C_MEMADD_SIZE_8BIT,&data,1,I2C_TIMEOUT);
 }
@@ -328,7 +323,7 @@ HAL_StatusTypeDef I2C_Write(I2C_TypeDef* I2Cx, uint8_t address, uint8_t reg, uin
 HAL_StatusTypeDef I2C_WriteMulti(I2C_TypeDef* I2Cx, uint8_t address, uint8_t reg, uint8_t* data, uint16_t count)
 {
 	assert(I2Cx == I2C1 || I2Cx == I2C2);
-	I2C_ID_e id = ((I2Cx == I2C2)?I2C2_ID:I2C1_ID);
+	I2C_id_e id = ((I2Cx == I2C2)?I2C2_NORMAL:I2C1_NORMAL);
 	return HAL_I2C_Mem_Write(&hi2c[id],address,reg,I2C_MEMADD_SIZE_8BIT,data,count,I2C_TIMEOUT);
 }
 
@@ -349,7 +344,7 @@ HAL_StatusTypeDef I2C_WriteMulti(I2C_TypeDef* I2Cx, uint8_t address, uint8_t reg
 HAL_StatusTypeDef I2C_WriteNoRegister(I2C_TypeDef* I2Cx, uint8_t address, uint8_t data)
 {
 	assert(I2Cx == I2C1 || I2Cx == I2C2);
-	I2C_ID_e id = ((I2Cx == I2C2)?I2C2_ID:I2C1_ID);
+	I2C_id_e id = ((I2Cx == I2C2)?I2C2_NORMAL:I2C1_NORMAL);
 	return HAL_I2C_Master_Transmit(&hi2c[id],address,&data,1,I2C_TIMEOUT);
 }
 
@@ -364,7 +359,7 @@ HAL_StatusTypeDef I2C_WriteNoRegister(I2C_TypeDef* I2Cx, uint8_t address, uint8_
 HAL_StatusTypeDef I2C_WriteMultiNoRegister(I2C_TypeDef* I2Cx, uint8_t address, uint8_t* data, uint16_t count)
 {
 	assert(I2Cx == I2C1 || I2Cx == I2C2);
-	I2C_ID_e id = ((I2Cx == I2C2)?I2C2_ID:I2C1_ID);
+	I2C_id_e id = ((I2Cx == I2C2)?I2C2_NORMAL:I2C1_NORMAL);
 	return HAL_I2C_Master_Transmit(&hi2c[id],address,data,count,I2C_TIMEOUT);
 }
 
@@ -379,16 +374,74 @@ HAL_StatusTypeDef I2C_WriteMultiNoRegister(I2C_TypeDef* I2Cx, uint8_t address, u
 bool_e I2C_IsDeviceConnected(I2C_TypeDef* I2Cx, uint8_t address)
 {
 	assert(I2Cx == I2C1 || I2Cx == I2C2);
-	I2C_ID_e id = ((I2Cx == I2C2)?I2C2_ID:I2C1_ID);
+	I2C_id_e id = ((I2Cx == I2C2)?I2C2_NORMAL:I2C1_NORMAL);
 	return (HAL_I2C_IsDeviceReady(&hi2c[id],address,2,I2C_TIMEOUT) == HAL_OK)?TRUE:FALSE;
 }
 
 I2C_HandleTypeDef * I2C_get_handle(I2C_TypeDef* I2Cx)
 {
 	assert(I2Cx == I2C1 || I2Cx == I2C2);
-	I2C_ID_e id = ((I2Cx == I2C2)?I2C2_ID:I2C1_ID);
+	I2C_id_e id = ((I2Cx == I2C2)?I2C2_NORMAL:I2C1_NORMAL);
 	return &hi2c[id];
 }
+
+
+#if I2C_ON_MULTIPLE_PINS
+
+//la fonction i2c_id_to_periph est une astuce permettant de rediriger à la demande le bus I2C vers les broches de remap.
+// ce code est réservé aux utilisateurs avertis...
+// des exemples sont toutefois disponibles ci-dessous.
+
+//il est toutefois généralement nécessaire d'adapter le code des modules logiciels utilisés afin de permettre cet usage "simultané" de plusieurs bus.
+
+void I2C_samples_of_code(void)
+{
+	uint8_t reg = 0, address = 0, data = 0;
+
+	//exemple d'utilisation de la fonction i2c_id_to_periph pour écrire sur le bus I2C1 à l'emplacement non remapé :
+	I2C_WriteNoRegister(i2c_id_to_periph(I2C1_NORMAL), address<<1, data);
+
+	//exemple d'utilisation de la fonction i2c_id_to_periph pour écrire sur le bus I2C1 à l'emplacement remapé :
+	I2C_WriteMulti(i2c_id_to_periph(I2C1_REMAP), address<<1, reg, &data, 1);
+
+	//exemple d'utilisation de la fonction i2c_id_to_periph pour lire sur le bus I2C2 à l'emplacement normal :
+	I2C_Read(i2c_id_to_periph(I2C2_NORMAL), address<<1, reg, &data);
+
+}
+
+
+I2C_TypeDef * i2c_id_to_periph(I2C_id_e i2c)
+{
+	I2C_TypeDef * ret = I2C1;
+	switch(i2c)
+	{
+		case I2C1_NORMAL:
+			BSP_GPIO_PinCfg(GPIOB, GPIO_PIN_8, GPIO_MODE_INPUT, GPIO_PULLUP, GPIO_SPEED_FREQ_MEDIUM);
+			BSP_GPIO_PinCfg(GPIOB, GPIO_PIN_9, GPIO_MODE_INPUT, GPIO_PULLUP, GPIO_SPEED_FREQ_MEDIUM);
+			__HAL_AFIO_REMAP_I2C1_DISABLE();
+			BSP_GPIO_PinCfg(GPIOB, GPIO_PIN_6, GPIO_MODE_AF_OD, GPIO_PULLUP, GPIO_SPEED_FREQ_MEDIUM);
+			BSP_GPIO_PinCfg(GPIOB, GPIO_PIN_7, GPIO_MODE_AF_OD, GPIO_PULLUP, GPIO_SPEED_FREQ_MEDIUM);
+
+			break;
+		case I2C1_REMAP:
+			BSP_GPIO_PinCfg(GPIOB, GPIO_PIN_6, GPIO_MODE_INPUT, GPIO_PULLUP, GPIO_SPEED_FREQ_MEDIUM);
+			BSP_GPIO_PinCfg(GPIOB, GPIO_PIN_7, GPIO_MODE_INPUT, GPIO_PULLUP, GPIO_SPEED_FREQ_MEDIUM);
+			__HAL_AFIO_REMAP_I2C1_ENABLE();
+			BSP_GPIO_PinCfg(GPIOB, GPIO_PIN_8, GPIO_MODE_AF_OD, GPIO_PULLUP, GPIO_SPEED_FREQ_MEDIUM);
+			BSP_GPIO_PinCfg(GPIOB, GPIO_PIN_9, GPIO_MODE_AF_OD, GPIO_PULLUP, GPIO_SPEED_FREQ_MEDIUM);
+
+			break;
+		case I2C2_NORMAL:
+			ret = I2C2;
+			break;
+		default:
+			break;
+	}
+	return ret;
+}
+
+#endif
+
 
 #endif
 
