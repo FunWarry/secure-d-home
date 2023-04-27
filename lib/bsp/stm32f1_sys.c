@@ -42,6 +42,29 @@ static volatile uint32_t uart_initialized = FALSE;
 void HAL_MspInit(void)
 {
 	BSP_GPIO_Enable();			//Activation des périphériques GPIO
+
+	//Force reset de certains registres qui ne semblent pas être correctement reset
+	GPIOA->CRL = 0x44444444;
+	GPIOA->CRH = 0x44444444;
+	GPIOA->ODR = 0x00000000;
+	GPIOA->CRL = 0x44444444;
+	GPIOB->CRH = 0x44444444;
+	GPIOB->ODR = 0x00000000;
+	GPIOB->CRL = 0x44444444;
+	GPIOB->CRH = 0x44444444;
+	GPIOC->ODR = 0x00000000;
+	GPIOC->CRL = 0x44444444;
+	GPIOC->CRH = 0x44444444;
+	GPIOC->ODR = 0x00000000;
+	GPIOD->ODR = 0x00000000;
+	GPIOD->CRL = 0x44444444;
+	GPIOD->CRH = 0x44444444;
+	GPIOD->ODR = 0x00000000;
+	GPIOE->ODR = 0x00000000;
+	GPIOE->CRL = 0x44444444;
+	GPIOE->CRH = 0x44444444;
+	GPIOE->ODR = 0x00000000;
+
 	SYS_ClockConfig();			//Configuration des horloges.
 }
 
