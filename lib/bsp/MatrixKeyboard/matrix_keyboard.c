@@ -83,8 +83,10 @@ const char custom_keyboard_12_touchs[16]  =  {
 
 static volatile uint32_t t = 0;
 
+
+//Cette fonction présente de façon simple l'utilisation de ce module logiciel.
 //Cette fonction doit être appelée dans la boucle de tâche de fond
-running_e DEMO_matrix_keyboard_process_main (bool_e ask_for_finish)
+void matrix_keyboard_demo_process_main (void)
 {
 	typedef enum
 	{
@@ -92,11 +94,10 @@ running_e DEMO_matrix_keyboard_process_main (bool_e ask_for_finish)
 		RUN
 	}state_e;
 	static state_e state = INIT;
-	running_e ret;
+
 	char press_key_event, release_key_event;
 	uint32_t all_touch_pressed;
 
-	ret = IN_PROGRESS;
 	switch(state)
 	{
 		case INIT:
@@ -104,14 +105,16 @@ running_e DEMO_matrix_keyboard_process_main (bool_e ask_for_finish)
 
 			//A modifier en fonction du clavier utilisé : par défaut, personnalisé ou personnalisé 12 touches
 			//KEYBOARD_init(NULL);						//Initialisation du clavier avec le clavier par défaut
-			//KEYBOARD_init(custom_keyboard);			//Initialisation du clavier avec un clavier personnalisé
-			KEYBOARD_init(custom_keyboard_12_touchs);	//Initialisation du clavier avec un clavier personnalisé 12 touches
+			KEYBOARD_init(custom_keyboard);			//Initialisation du clavier avec un clavier personnalisé
+			//KEYBOARD_init(custom_keyboard_12_touchs);	//Initialisation du clavier avec un clavier personnalisé 12 touches
 
+			//pensez à renseigner les bons ports dans matrix_keyboard.h en fonction de votre hardware.
 			printf("To run this demo, you should plug a matrix keyboard on the right ports. See matrix_keyboard.h\n");
-			printf("Warning: the defaults ports used by this drivers are not compatible with the presence of SD card or Motors!\n");
 			state = RUN;
 			break;
 		case RUN:
+
+			//pour éviter les rebonds, il est important de lire le clavier toutes les 10ms environ.
 			if(!t)	//A chaque fois que t vaut 0 (toutes les 10ms)...
 			{
 				t = 10;							//[ms] On recharge le chronomètre t pour 10ms...
@@ -139,17 +142,10 @@ running_e DEMO_matrix_keyboard_process_main (bool_e ask_for_finish)
 						break;
 				}
 			}
-			if(ask_for_finish)
-			{
-				state = INIT;
-				Systick_remove_callback_function(DEMO_matrix_keyboard_process_1ms);
-				ret = END_OK;
-			}
 			break;
 		default:
 			break;
 	}
-	return ret;
 }
 
 //Cette fonction doit être appelée toutes les ms.
