@@ -140,7 +140,6 @@
 #define USE_MOTOR_DC			0
 #define USE_STEPPER_MOTOR		0
 #define USE_RTC					0
-#define USE_PWM					0
 #define USE_ESP8266				0//Module Wifi
 #define USE_NFC03A1				0
 #define USE_EPAPER				0
