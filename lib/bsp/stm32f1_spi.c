@@ -245,3 +245,9 @@ void SPI_setBaudRate(SPI_TypeDef* SPIx, uint16_t SPI_BaudRatePrescaler)
 	HAL_SPI_Init(&hSPI[id]);
 	SPI_Cmd(SPIx, ENABLE);
 }
+
+uint32_t SPI_getBaudrate(SPI_TypeDef* SPIx)
+{
+	SPI_ID_e id = ((SPIx == SPI2)?SPI2_ID:SPI1_ID);
+	return hSPI[id].Init.BaudRatePrescaler;
+}

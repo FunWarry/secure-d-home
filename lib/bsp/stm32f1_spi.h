@@ -29,6 +29,8 @@ void SPI_WriteReadBuffer(SPI_TypeDef* SPIx, const uint8_t *DataIn, uint8_t *Data
 
 void SPI_setBaudRate(SPI_TypeDef* SPIx, uint16_t SPI_BaudRatePrescaler);
 
+uint32_t SPI_getBaudrate(SPI_TypeDef* SPIx);
+
 typedef enum {
 	TM_SPI_DataSize_8b, /*!< SPI in 8-bits mode */
 	TM_SPI_DataSize_16b /*!< SPI in 16-bits mode */

@@ -119,7 +119,6 @@ void XPT2046_demo(void)
 
 
 
-
 /**
  * @brief init function for XPT2046 lib
  */
@@ -127,6 +126,9 @@ void XPT2046_init(void){
 
 	// Initialise SPI
 	SPI_Init(XPT2046_SPI);
+	uint32_t previousBaudrate;
+	previousBaudrate = SPI_getBaudrate(XPT2046_SPI);
+	SPI_setBaudRate(XPT2046_SPI, SPI_BAUDRATEPRESCALER_256);	//slow for XPT2046
 	BSP_GPIO_PinCfg(PIN_CS_TOUCH,GPIO_MODE_OUTPUT_PP,GPIO_NOPULL,GPIO_SPEED_FREQ_HIGH);
 	BSP_GPIO_PinCfg(PIN_IRQ_TOUCH,GPIO_MODE_INPUT,GPIO_PULLDOWN,GPIO_SPEED_FREQ_HIGH);
 	XPT2046_CS_SET();
@@ -136,14 +138,10 @@ void XPT2046_init(void){
 					   | CONTROL_BYTE_MODE_12_BIT
 					   | CONTROL_BYTE_SD_DIFFERENTIAL
 					   | CONTROL_BYTE_POWER_DOWN_MODE_LOW_POWER_IRQ);
+
+	SPI_setBaudRate(XPT2046_SPI, previousBaudrate);	//"fast" for everyone else...
 }
 
-/*
- * @brief Reconfigure SPI speed (currently not working)
- */
-void XPT2046_setConfig(void){
-	SPI_setBaudRate(XPT2046_SPI, SPI_BAUDRATEPRESCALER_256);
-}
 
 /*
  * @brief function to get coordinate on a chosen coordinate mode.
@@ -156,6 +154,11 @@ bool_e XPT2046_getCoordinates(Sint16 * pX, Sint16 * pY, XPT2046_coordinateMode_e
 	Uint8 i, j;
 	Sint16 allX[7] , allY[7];
 	bool_e ret;
+
+	uint32_t previousBaudrate;
+	previousBaudrate = SPI_getBaudrate(XPT2046_SPI);
+	SPI_setBaudRate(XPT2046_SPI, SPI_BAUDRATEPRESCALER_256);	//slow for XPT2046
+
 	for (i=0; i < 7 ; i++){
 
 		allY[i] = (Sint16)XPT2046_getReading(CONTROL_BYTE_START
@@ -203,6 +206,8 @@ bool_e XPT2046_getCoordinates(Sint16 * pX, Sint16 * pY, XPT2046_coordinateMode_e
 
 	*pX = allX[3];
 	*pY = allY[3];
+
+	SPI_setBaudRate(XPT2046_SPI, previousBaudrate);	//"fast" for everyone else...
 
 	return ret;
 }
