@@ -660,9 +660,8 @@ void dump_trap_info(uint32_t stack_ptr[], uint32_t lr) {
 		dump_printf("0x%08lX ", stack_ptr[offset++]);
 	}
 	dump_printf("\n");
-
-
 	dump_printf("END of Fault Handler\n");
+	while(1);
 }
 
 __attribute__((naked)) void Fault_Handler(void)
@@ -671,6 +670,12 @@ __attribute__((naked)) void Fault_Handler(void)
 	//l'attribut naked indique qu'on ne veux pas de prologue / epilogue générés par GCC
 	__asm volatile
 	(
+	//Si vous lisez ces lignes, c'est probablement que quelque chose de moche s'est passé dans le microcontrôleur..
+	//Et très probablement.... à cause de vous !
+		//Reste à prier pour que cette erreur soit reproductible à chaque lancement de votre programme (ce qui est généralement une chance pour nourrir l'espoir de la résoudre).
+			//Cherchez à quel moment exact cette erreur est déclenchée, cela donne souvent un bon indice sur ce qui se passe mal.
+			//Vérifiez notamment qu'il n'y a pas d'oubli d'initialisation (périphérique/module logiciel).
+			//Bon courage !!!
 		"TST LR, #4\n"		// Test for MSP or PSP
 		"ITE EQ\n"			//If equal
 		"MRSEQ R0, MSP\n"	//r0 = msp
