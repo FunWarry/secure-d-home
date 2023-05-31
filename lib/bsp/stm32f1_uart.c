@@ -444,7 +444,13 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
  */
 void HAL_UART_MspInit(UART_HandleTypeDef *huart)
 {
-
+	huart->Instance->SR = 0x00C0;
+	huart->Instance->DR = 0x0000;
+	huart->Instance->BRR = 0x0000;
+	huart->Instance->CR1 = 0x0000;
+	huart->Instance->CR2 = 0x0000;
+	huart->Instance->CR3 = 0x0000;
+	huart->Instance->GTPR = 0x0000;
 	if(huart->Instance == USART1)
 	{
 		#ifdef UART1_ON_PA9_PA10
