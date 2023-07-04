@@ -664,15 +664,16 @@ void dump_trap_info(uint32_t stack_ptr[], uint32_t lr) {
 	while(1);
 }
 
+//On ne veux pas perdre l'état des registres, donc pas de C
+	//l'attribut naked indique qu'on ne veux pas de prologue / epilogue générés par GCC
 __attribute__((naked)) void Fault_Handler(void)
 {
-	//On ne veux pas perdre l'état des registres, donc pas de C
-	//l'attribut naked indique qu'on ne veux pas de prologue / epilogue générés par GCC
 	__asm volatile
 	(
 	//Si vous lisez ces lignes, c'est probablement que quelque chose de moche s'est passé dans le microcontrôleur..
 	//Et très probablement.... à cause de vous !
-		//Reste à prier pour que cette erreur soit reproductible à chaque lancement de votre programme (ce qui est généralement une chance pour nourrir l'espoir de la résoudre).
+		//Reste à prier pour que cette erreur soit reproductible à chaque lancement de votre programme
+		//(ce qui est généralement une chance pour nourrir l'espoir de la résoudre).
 			//Cherchez à quel moment exact cette erreur est déclenchée, cela donne souvent un bon indice sur ce qui se passe mal.
 			//Vérifiez notamment qu'il n'y a pas d'oubli d'initialisation (périphérique/module logiciel).
 			//Bon courage !!!
