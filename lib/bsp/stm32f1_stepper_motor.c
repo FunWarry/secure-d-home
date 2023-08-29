@@ -33,6 +33,7 @@ static const uint8_t pulse_pins[MOTOR_NB] = 	{15, 13};	//ici les broches des pul
 volatile static int32_t positions[MOTOR_NB] = {0};
 volatile static int32_t goals[MOTOR_NB] = {0};
 volatile static int32_t pulse_period[MOTOR_NB] = {10, 10};	//"vitesse" par défaut (période par défaut entre deux pulses)
+static callback_fun_t callback_at_each_pulse = NULL;
 
 static void STEPPER_MOTOR_pin_set(uint32_t pin, bool_e b);
 
@@ -57,6 +58,10 @@ void STEPPER_MOTORS_init(void)
 }
 
 
+void STEPPER_MOTOR_set_callback_at_each_pulse(callback_fun_t cb)
+{
+	callback_at_each_pulse = cb;
+}
 
 void STEPPER_MOTOR_enable(motor_id_e id, bool_e enable)
 {
@@ -69,6 +74,8 @@ void STEPPER_MOTORS_do_pulse(motor_id_e id)
 	STEPPER_MOTOR_pin_set(pulse_pins[id], 0);
 	Delay_us(30);
 	STEPPER_MOTOR_pin_set(pulse_pins[id], 1);
+	if(callback_at_each_pulse != NULL)
+		callback_at_each_pulse();
 }
 
 void STEPPER_MOTORS_set_dir(motor_id_e id, bool_e direction)
@@ -104,6 +111,12 @@ void STEPPER_MOTOR_set_goal(motor_id_e id, int32_t newgoal)
 
 int32_t STEPPER_MOTOR_get_positionx (motor_id_e id){
 	return positions[id];
+}
+
+void STEPPER_MOTOR_set_position(motor_id_e id, int32_t newposition)
+{
+	if(id<MOTOR_NB)
+		positions[id] = newposition;
 }
 
 bool_e STEPPER_MOTOR_is_arrived (motor_id_e id){

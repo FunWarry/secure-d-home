@@ -120,6 +120,9 @@ static void DHT11_callback_exti(uint16_t pin)
 	}
 }
 //Attention, fonction blocante pendant 4ms !
+//@pre Attention, vous devez appeler régulièrement cette fonction, plus souvent que 20ms.
+		//un dysfonctionnement connu pourrait se produire dans le cas contraire,
+		//(car la durée du pulse de lancement (état SEND_START_SIGNAL) ne doit pas être trop lonngue)
 running_e DHT11_state_machine_get_datas(uint8_t * humidity_int, uint8_t * humidity_dec, uint8_t * temperature_int, uint8_t * temperature_dec)
 {
 	typedef enum
