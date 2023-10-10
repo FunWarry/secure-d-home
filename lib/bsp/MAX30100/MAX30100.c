@@ -15,6 +15,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+#if USE_MAX30100
 
 #include "MAX30100.h"
 #include "macro_types.h"
@@ -203,3 +204,4 @@ uint8_t MAX30100_getPartId()
 {
     return readRegister(0xff);
 }
+#endif
