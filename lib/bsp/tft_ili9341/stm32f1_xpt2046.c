@@ -143,6 +143,44 @@ void XPT2046_init(void){
 }
 
 
+bool_e XPT2046_press_event_state_machine(int16_t * px, int16_t * py)
+{
+	typedef enum{
+		INIT = 0,
+		WAIT_PRESS,
+		WAIT_RELEASE
+	}state_e;
+	static state_e state = INIT;
+	static state_e previous_state = INIT;
+	bool_e entrance = (state!=previous_state);
+	previous_state = state;
+	bool_e ret;
+	ret = FALSE;
+	
+	switch(state)
+	{
+		case INIT:
+			XPT2046_init();
+			state = WAIT_PRESS;
+			break;
+			
+		case WAIT_PRESS:
+			if(XPT2046_getCoordinates(px, py, XPT2046_COORDINATE_SCREEN_RELATIVE))
+			{	
+				state = WAIT_RELEASE;
+				ret = TRUE;
+			}
+			break;
+		case WAIT_RELEASE:
+			if(XPT2046_getCoordinates(px, py, XPT2046_COORDINATE_SCREEN_RELATIVE) == FALSE)
+				state = WAIT_PRESS;
+			break;
+		default:
+			break;
+	}
+	return ret;
+}
+
 /*
  * @brief function to get coordinate on a chosen coordinate mode.
  * @param *pX : pointer to get the X coordinate

@@ -17,6 +17,7 @@ typedef enum{
 
 void XPT2046_init(void);
 void XPT2046_demo(void);
+bool_e XPT2046_press_event_state_machine(int16_t * px, int16_t * py);	
 bool_e XPT2046_getCoordinates(Sint16 * pX, Sint16 * pY, XPT2046_coordinateMode_e coordinateMode);
 bool_e XPT2046_getMedianCoordinates(Sint16 * pX, Sint16 * pY, XPT2046_coordinateMode_e coordinateMode);
 bool_e XPT2046_getAverageCoordinates(Sint16 * pX, Sint16 * pY, Uint8 nSamples, XPT2046_coordinateMode_e coordinateMode);
