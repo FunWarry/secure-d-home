@@ -146,8 +146,13 @@
 #define	USE_GPS					0
 #define USE_HCSR04				1	//Ultrason
 #define USE_HX711				0
+<<<<<<< HEAD
 #define USE_DAC_MCP4921			0
 #define USE_IR_EMITTER			0	//emmeteur infrarouge
+=======
+#define USE_DAC_MCP4921			0	//Température
+#define USE_IR_EMITTER			0
+>>>>>>> 02ec3d380f16e557460c7933b6aba7347990bbb2
 #define USE_IR_RECEIVER			0
 #define USE_IR_RECEIVER_NEC		0
 #define USE_DS18B20				0
