@@ -147,7 +147,7 @@
 #define USE_HCSR04				1	//Ultrason
 #define USE_HX711				0
 #define USE_DAC_MCP4921			0
-#define USE_IR_EMITTER			0
+#define USE_IR_EMITTER			0	//emmeteur infrarouge
 #define USE_IR_RECEIVER			0
 #define USE_IR_RECEIVER_NEC		0
 #define USE_DS18B20				0
