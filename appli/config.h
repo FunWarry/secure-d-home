@@ -64,7 +64,7 @@
 #define USE_BSP_TIMER			1 //Utilisation de stm32f1_timer.c/h
 
 
-#define USE_ADC					0
+#define USE_ADC					1
 	//Ces configurations permettent d'activer les entrées analogiques souhaitées.
 	//16 entrées analogiques peuvent être activées maximum.
 	//2 entrées analogiques doivent être activées minimum. (Vref est un choix possible si vous utilisez une seule entrée)
@@ -72,12 +72,12 @@
 	#define USE_AN1			0	//Broche correspondante : PA1
 	#define USE_AN2			0	//Broche correspondante : PA2	//Sur la Nucleo, cette broche n'est pas câblée !
 	#define USE_AN3			0	//Broche correspondante : PA3	//Sur la Nucleo, cette broche n'est pas câblée !
-	#define USE_AN4			0	//Broche correspondante : PA4
-	#define USE_AN5			0	//Broche correspondante : PA5
-	#define USE_AN6			0	//Broche correspondante : PA6
-	#define USE_AN7			0	//Broche correspondante : PA7
-	#define USE_AN8			0	//Broche correspondante : PB0
-	#define USE_AN9			0	//Broche correspondante : PB1
+	#define USE_AN4			1	//Broche correspondante : PA4   //Shield ethernet B10
+	#define USE_AN5			1	//Broche correspondante : PA5	//SCK
+	#define USE_AN6			1	//Broche correspondante : PA6	//MISO
+	#define USE_AN7			1	//Broche correspondante : PA7	//MOSI
+	#define USE_AN8			1	//Broche correspondante : PB0	//Photorésistance
+	#define USE_AN9			1	//Broche correspondante : PB1	//TFT DC
 	#define USE_AN10		0	//Broche correspondante : PC0	//Sur la Bluepill, cette broche n'est pas câblée !
 	#define USE_AN11		0	//Broche correspondante : PC1	//Sur la Bluepill, cette broche n'est pas câblée !
 	#define USE_AN12		0	//Broche correspondante : PC2	//Sur la Bluepill, cette broche n'est pas câblée !
@@ -90,7 +90,7 @@
 
 #define USE_SCREEN_TFT_ILI9341		1	//Ecran TFT 2.4
 	#if USE_SCREEN_TFT_ILI9341
-		#define USE_XPT2046			1	//Tactile
+		#define USE_XPT2046			0	//Tactile
 
 		#define USE_FONT11x18		0
 		#define USE_FONT7x10		1
@@ -124,7 +124,7 @@
 #define USE_SENSOR_LPS22HB		0//Pression (et température)
 #define USE_MLX90614			0	//Capteur de température sans contact
 #define USE_MPU6050				0//Accéléromètre et Gyroscope
-#define USE_DHT11				0
+#define USE_DHT11				1
 
 #define USE_MATRIX_KEYBOARD		0
 #define USE_MATRIX_LED			0
@@ -140,11 +140,11 @@
 #define USE_MOTOR_DC			0
 #define USE_STEPPER_MOTOR		0
 #define USE_RTC					0
-#define USE_ESP8266				0//Module Wifi
+#define USE_ESP8266				0	//Module Wifi
 #define USE_NFC03A1				0
 #define USE_EPAPER				0
 #define	USE_GPS					0
-#define USE_HCSR04				0
+#define USE_HCSR04				1	//Ultrason
 #define USE_HX711				0
 #define USE_DAC_MCP4921			0
 #define USE_IR_EMITTER			0
@@ -181,10 +181,10 @@
 
 //Liste des modules utilisant le périphérique I2C
 #if USE_MLX90614 || USE_MPU6050	|| USE_APDS9960	 || USE_BH1750FVI || USE_BMP180 || USE_MCP23017 || USE_VL53L0
-	#define USE_I2C				1
+	#define USE_I2C				0
 #else
 	#ifndef USE_I2C
-		#define USE_I2C		0
+		#define USE_I2C		1
 	#endif
 #endif
 #define I2C_TIMEOUT				5	//ms
