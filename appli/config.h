@@ -151,7 +151,7 @@
 #define USE_IR_RECEIVER			1
 #define USE_IR_RECEIVER_NEC		0
 #define USE_DS18B20				0
-#define USE_MIDI				0
+#define USE_MIDI				1
 #define USE_PS2_KEYBOARD		0
 #define	USE_VL53L0				0
 #if USE_VL53L0
