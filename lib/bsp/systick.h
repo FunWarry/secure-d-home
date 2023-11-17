@@ -8,6 +8,7 @@
 #ifndef SYSTICK_H_
 #define SYSTICK_H_
 
+#include <stdint.h>
 #include "macro_types.h"
 
 void Systick_init(void);
