@@ -10,6 +10,7 @@
 
 #include <stdint.h>
 #include "macro_types.h"
+#include <stdint.h>
 
 void Systick_init(void);
 
