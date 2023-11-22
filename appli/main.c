@@ -12,6 +12,7 @@
 #include "stm32f1_gpio.h"
 #include "macro_types.h"
 #include "systick.h"
+#include "MQTTClient.h"
 
 void writeLED(bool_e b)
 {
@@ -54,12 +55,41 @@ int main(void)
 	//On ajoute la fonction process_ms à la liste des fonctions appelées automatiquement chaque ms par la routine d'interruption du périphérique SYSTICK
 	Systick_add_callback_function(&process_ms);
 
+	MQTTClient Client;
+	uint8_t sendbuf[2048];
+	uint8_t readbuf[1024];
+	wizchip_init(bufSize, bufSize);
+	wiz_NetInfo netInfo = { .mac 	= {0xa8, 0x61, 0x0A, 0xAE, 0x89, 0x43}};					// Gateway address
+	wizchip_setnetinfo(&netInfo);
+
+	MQTTClientInit(&Client, &network, 100, sendbuf, 2048, readbuf, 1024);
+
+	char* addr = "eseodp.cloud.shiftr.io";
+	char* port = "1883";
+	char* topic = "maison";
+
+
 	while(1)	//boucle de tâche de fond
 	{
-		if(!t)
-		{
-			t = 200;
-			HAL_GPIO_TogglePin(LED_GREEN_GPIO, LED_GREEN_PIN);
-		}
+
 	}
+}
+
+
+void cs_sel() {
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_RESET); //CS LOW
+}
+
+void cs_desel() {
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_12, GPIO_PIN_SET); //CS HIGH
+}
+
+uint8_t spi_rb(void) {
+	uint8_t rbuf;
+	HAL_SPI_Receive(&hspi1, &rbuf, 1, 0xFFFFFFFF);
+	return rbuf;
+}
+
+void spi_wb(uint8_t b) {
+	HAL_SPI_Transmit(&hspi1, &b, 1, 0xFFFFFFFF);
 }
