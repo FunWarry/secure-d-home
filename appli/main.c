@@ -35,47 +35,11 @@ void process_ms(void)
 	if(t)
 		t--;
 }
-/*
-wiz_NetInfo netInfo = { .mac 	= {0xa8, 0x61, 0x0A, 0xAE, 0x89, 0x43}};					// Gateway address
+
+// Gateway address
 r = "eseodp.cloud.shiftr.io";
-char* port = "1883";
 char* topic = "maison";
 
-
-int main(void)
-{
-	//Initialisation de la couche logicielle HAL (Hardware Abstraction Layer)
-	//Cette ligne doit rester la première étape de la fonction main().
-	HAL_Init();
-
-	//Initialisation de l'UART2 à la vitesse de 115200 bauds/secondes (92kbits/s) PA2 : Tx  | PA3 : Rx.
-		//Attention, les pins PA2 et PA3 ne sont pas reliées jusqu'au connecteur de la Nucleo.
-		//Ces broches sont redirigées vers la sonde de débogage, la liaison UART étant ensuite encapsulée sur l'USB vers le PC de développement.
-	UART_init(UART2_ID,115200);
-
-	//"Indique que les printf sortent vers le périphérique UART2."
-	SYS_set_std_usart(UART2_ID, UART2_ID, UART2_ID);
-
-	//Initialisation du port de la led Verte (carte Nucleo)
-	BSP_GPIO_PinCfg(LED_GREEN_GPIO, LED_GREEN_PIN, GPIO_MODE_OUTPUT_PP,GPIO_NOPULL,GPIO_SPEED_FREQ_HIGH);
-
-	//Initialisation du port du bouton bleu (carte Nucleo)
-	BSP_GPIO_PinCfg(BLUE_BUTTON_GPIO, BLUE_BUTTON_PIN, GPIO_MODE_INPUT,GPIO_PULLUP,GPIO_SPEED_FREQ_HIGH);
-
-	//On ajoute la fonction process_ms à la liste des fonctions appelées automatiquement chaque ms par la routine d'interruption du périphérique SYSTICK
-	Systick_add_callback_function(&process_ms);
-
-
-
-
-
-	while(1)	//boucle de tâche de fond
-	{
-
-	}
-}
-
-*/
 
 
 //Include: W5500 iolibrary
@@ -99,9 +63,8 @@ int main(void)
 //Global variables
 unsigned char targetIP[4] = {34,77,13,55}; // mqtt server IP
 unsigned int targetPort = 1883; // mqtt server port
-uint8_t mac_address[6] = {0xa8, 0x61, 0x0A, 0xAE, 0x89, 0x43};
 wiz_NetInfo gWIZNETINFO = { .mac = {0xa8, 0x61, 0x0A, 0xAE, 0x89, 0x43}, //user MAC
-							.ip = {}, //user IP
+							.ip = {172,14,3,1}, //user IP
 							.sn = {},
 							.gw = {},
 							.dns = {},
@@ -109,20 +72,32 @@ wiz_NetInfo gWIZNETINFO = { .mac = {0xa8, 0x61, 0x0A, 0xAE, 0x89, 0x43}, //user 
 
 unsigned char tempBuffer[BUFFER_SIZE] = {};
 
+// @brief Options structure for MQTTClient
 struct opts_struct
 {
-	char* clientid;
-	int nodelimiter;
-	char* delimiter;
-	enum QoS qos;
-	char* username;
-	char* password;
-	char* host;
-	int port;
-	int showtopics;
-} opts;
+    const char* clientid;
+    int nodelimiter;
+    const char* delimiter;
+    enum QoS qos;
+    const char* username;
+    const char* password;
+    const char* host;
+    int port;
+    int showtopics;
+};
 
-opts_struct opts ={"Carte", 0, "\n", QOS0, "eseodp", "eseoproj1", targetIP, targetPort, 1 };
+struct opts_struct opts = {
+    .clientid = "eseodp",
+    .nodelimiter = 0,
+    .delimiter = "\n",
+    .qos = QOS0,
+    .username = "eseodp",
+    .password = "eseoproj1",
+    .host = targetIP,
+    .port = &targetPort,
+    .showtopics = 1
+};
+
 // @brief messageArrived callback function
 void messageArrived(MessageData* md)
 {
@@ -143,24 +118,7 @@ void messageArrived(MessageData* md)
 }
 
 
-// @brief 1 millisecond Tick Timer setting
-void NVIC_configuration(void)
-{
-	NVIC_InitTypeDef NVIC_InitStructure;
-	SysTick_CLKSourceConfig(SysTick_CLKSource_HCLK);
-	SysTick_Config(72000);
-	NVIC_InitStructure.NVIC_IRQChannel = SysTick_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0; // Highest priority
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-	NVIC_Init(&NVIC_InitStructure);
-}
 
-// @brief 1 millisecond Tick Timer Handler setting
-void SysTick_Handler(void)
-{
-	MilliTimer_Handler();
-}
 
 int main(void)
 {
@@ -185,6 +143,7 @@ int main(void)
 
 		//On ajoute la fonction process_ms à la liste des fonctions appelées automatiquement chaque ms par la routine d'interruption du périphérique SYSTICK
 		Systick_add_callback_function(&process_ms);
+		Systick_add_callback_function(&MilliTimer_Handler);
 
 
 
@@ -192,35 +151,11 @@ int main(void)
 	int rc = 0;
 	unsigned char buf[100];
 	//Usart initialization for Debug.
-	USART2Initialze();
-		printf("USART initialized.\n\r");
 
-	I2C1Initialize();
-		printf("I2C initialized.\n\r");
-
-	MACEEP_Read(mac_address,0xfa,6);
-
-	printf("Mac address\n\r");
-	for(i = 0 ; i < 6 ; i++)
-	{
-		printf("%02x ",mac_address[i]);
-	}
-	printf("\n\r");
-
-
-	//W5500 initialization.
-	W5100HardwareInitilize();
-		printf("W5100 hardware interface initialized.\n\r");
-
-	W5100Initialze();
-		printf("W5100 IC initialized.\n\r");
 
 	//Set network informations
 	wizchip_setnetinfo(&gWIZNETINFO);
 
-	setSHAR(mac_address);
-
-	print_network_information();
 
 	Network n;
 	MQTTClient c;
