@@ -63,6 +63,7 @@ char* topic = "maison";
 //Global variables
 unsigned char targetIP[4] = {34,77,13,55}; // mqtt server IP
 unsigned int targetPort = 1883; // mqtt server port
+uint8_t mac_address[6] = {0xa8, 0x61, 0x0A, 0xAE, 0x89, 0x43};
 wiz_NetInfo gWIZNETINFO = { .mac = {0xa8, 0x61, 0x0A, 0xAE, 0x89, 0x43}, //user MAC
 							.ip = {172,14,3,1}, //user IP
 							.sn = {},
@@ -153,8 +154,20 @@ int main(void)
 	//Usart initialization for Debug.
 
 
+
+	printf("Mac address\n\r");
+	for(i = 0 ; i < 6 ; i++)
+	{
+		printf("%02x ",mac_address[i]);
+	}
+	printf("\n\r");
+
+
 	//Set network informations
+	setSHAR(mac_address);
+
 	wizchip_setnetinfo(&gWIZNETINFO);
+
 
 
 	Network n;
