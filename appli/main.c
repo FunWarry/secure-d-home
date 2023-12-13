@@ -8,6 +8,7 @@
 */
 #include "stm32f1xx_hal.h"
 #include "stm32f1_uart.h"
+#include "stm32f1_spi.h"
 #include "stm32f1_sys.h"
 #include "stm32f1_gpio.h"
 #include "macro_types.h"
@@ -62,7 +63,7 @@ char* topic = "maison";
 
 //Global variables
 unsigned char targetIP[4] = {34,77,13,55}; // mqtt server IP
-unsigned int targetPort = 1883; // mqtt server port
+uint16_t targetPort = 1883; // mqtt server port
 uint8_t mac_address[6] = {0xA8, 0x61, 0x0A, 0xAE, 0x89, 0x43};
 wiz_NetInfo gWIZNETINFO = { .mac = {0xA8, 0x61, 0x0A, 0xAE, 0x89, 0x43}, //user MAC
 							.ip = {172,14,3,1}, //user IP
@@ -85,19 +86,9 @@ struct opts_struct
     const char* host;
     int port;
     int showtopics;
-};
+} opts = {(char*)"eseodp", 0, (char*)"\n", QOS0, (char*)"eseodp", (char*)"eseoproj1", (char*)"eseodp.cloud.shiftr.io", 1883, 1};
 
-struct opts_struct opts = {
-    .clientid = "eseodp",
-    .nodelimiter = 0,
-    .delimiter = "\n",
-    .qos = QOS0,
-    .username = "eseodp",
-    .password = "eseoproj1",
-    .host = targetIP,
-    .port = &targetPort,
-    .showtopics = 1
-};
+
 
 // @brief messageArrived callback function
 void messageArrived(MessageData* md)
@@ -146,13 +137,13 @@ int main(void)
 	Systick_add_callback_function(&process_ms);
 	Systick_add_callback_function(&MilliTimer_Handler);
 
+	SPI_Init(SPI1);
 
 
 	int i;
 	int rc = 0;
 	unsigned char buf[100];
 	//Usart initialization for Debug.
-
 
 
 	printf("Mac address\n\r");
@@ -163,10 +154,12 @@ int main(void)
 	printf("\n\r");
 
 
+
 	//Set network informations
+	setSHAR(mac_address);
+
 	wizchip_setnetinfo(&gWIZNETINFO);
 
-	setSHAR(mac_address);
 
 	Network n;
 	MQTTClient c;
