@@ -9,7 +9,7 @@
 #define CONFIG_H_
 #include "stm32f1xx_hal.h"
 
-//Choix de la cible utilisée.
+//Choix de la cible utilisée
 #define NUCLEO	0
 #define BLUEPILL 1
 
