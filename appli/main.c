@@ -62,15 +62,26 @@ char* topic = "maison";
 #define BUFFER_SIZE	2048
 
 //Global variables
-unsigned char targetIP[4] = {34,77,13,55}; // mqtt server IP
+unsigned char targetBroker[30] = "eseodp.cloud.shiftr.io"; // mqtt server IP
+//unsigned char targetIP[4] = {34,77,13,55};
+unsigned char targetIP[4] = {127,0,0,1};// mqtt server IP
 uint16_t targetPort = 1883; // mqtt server port
 uint8_t mac_address[6] = {0xA8, 0x61, 0x0A, 0xAE, 0x89, 0x43};
-wiz_NetInfo gWIZNETINFO = { .mac = {0xA8, 0x61, 0x0A, 0xAE, 0x89, 0x43}, //user MAC
+/*wiz_NetInfo gWIZNETINFO = { .mac = {0xA8, 0x61, 0x0A, 0xAE, 0x89, 0x43}, //user MAC
 							.ip = {172,14,3,1}, //user IP
-							.sn = {},
-							.gw = {},
-							.dns = {},
+							.sn = {255,255,0,0},
+							.gw = {172,23,0,50},
+							.dns = {8,8,8,8},
 							.dhcp = NETINFO_STATIC};
+*/
+// connection localhost
+wiz_NetInfo gWIZNETINFO = { .mac = {0xA8, 0x61, 0x0A, 0xAE, 0x89, 0x43}, //user MAC
+							.ip = {192,168,71,2}, //user IP
+							.sn = {255,255,255,0},
+							.gw = {},
+							.dns = {8,8,8,8},
+							.dhcp = NETINFO_STATIC
+};
 
 unsigned char tempBuffer[BUFFER_SIZE] = {};
 
@@ -86,8 +97,7 @@ struct opts_struct
     const char* host;
     int port;
     int showtopics;
-} opts = {(char*)"eseodp", 0, (char*)"\n", QOS0, (char*)"eseodp", (char*)"eseoproj1", (char*)"eseodp.cloud.shiftr.io", 1883, 1};
-
+} opts = {NULL, 0, (char*)"\n", QOS0, NULL, NULL, (char*)&targetIP, &targetPort, 0};//opts = {(char*)"eseodp", 0, (char*)"\n", QOS0, (char*)"eseodp", (char*)"eseoproj1", (char*)&targetIP, &targetPort, 1};
 
 
 // @brief messageArrived callback function
@@ -165,7 +175,7 @@ int main(void)
 	MQTTClient c;
 
 	NewNetwork(&n, TCP_SOCKET);
-	ConnectNetwork(&n, targetIP, targetPort);
+	ConnectNetwork(&n, (char*){34,77,13,55}, targetPort);
 	MQTTClientInit(&c,&n,1000,buf,100,tempBuffer,2048);
 
 	MQTTPacket_connectData data = MQTTPacket_connectData_initializer;
