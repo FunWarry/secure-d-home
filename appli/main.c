@@ -56,32 +56,33 @@ char* topic = "maison";
 #include <stdio.h>
 
 //Socket number defines
-#define TCP_SOCKET	0
+#define TCP_SOCKET 0
+
 
 //Receive Buffer Size define
 #define BUFFER_SIZE	2048
 
 //Global variables
 unsigned char targetBroker[30] = "eseodp.cloud.shiftr.io"; // mqtt server IP
-//unsigned char targetIP[4] = {34,77,13,55};
-unsigned char targetIP[4] = {127,0,0,1};// mqtt server IP
+unsigned char targetIP[4] = {34,77,13,55};
+//unsigned char targetIP[4] = {127,0,0,1};// mqtt server IP local
 uint16_t targetPort = 1883; // mqtt server port
 uint8_t mac_address[6] = {0xA8, 0x61, 0x0A, 0xAE, 0x89, 0x43};
-/*wiz_NetInfo gWIZNETINFO = { .mac = {0xA8, 0x61, 0x0A, 0xAE, 0x89, 0x43}, //user MAC
-							.ip = {172,14,3,1}, //user IP
+wiz_NetInfo gWIZNETINFO = { .mac = {0xA8, 0x61, 0x0A, 0xAE, 0x89, 0x43}, //user MAC
+							.ip = {172,14,5,5}, //user IP
 							.sn = {255,255,0,0},
 							.gw = {172,23,0,50},
 							.dns = {8,8,8,8},
 							.dhcp = NETINFO_STATIC};
-*/
+
 // connection localhost
-wiz_NetInfo gWIZNETINFO = { .mac = {0xA8, 0x61, 0x0A, 0xAE, 0x89, 0x43}, //user MAC
-							.ip = {192,168,71,2}, //user IP
-							.sn = {255,255,255,0},
-							.gw = {},
-							.dns = {8,8,8,8},
-							.dhcp = NETINFO_STATIC
-};
+//wiz_NetInfo gWIZNETINFO = { .mac = {0xA8, 0x61, 0x0A, 0xAE, 0x89, 0x43}, //user MAC
+//							.ip = {192,168,71,2}, //user IP
+//							.sn = {255,255,255,0},
+//							.gw = {},
+//							.dns = {8,8,8,8},
+//							.dhcp = NETINFO_STATIC
+//};
 
 unsigned char tempBuffer[BUFFER_SIZE] = {};
 
@@ -97,7 +98,7 @@ struct opts_struct
     const char* host;
     int port;
     int showtopics;
-} opts = {NULL, 0, (char*)"\n", QOS0, NULL, NULL, (char*)&targetIP, &targetPort, 0};//opts = {(char*)"eseodp", 0, (char*)"\n", QOS0, (char*)"eseodp", (char*)"eseoproj1", (char*)&targetIP, &targetPort, 1};
+} opts = {(char*)"eseodp", 0, (char*)"\n", QOS0, (char*)"eseodp", (char*)"eseoproj1", (char*)&targetBroker, &targetPort, 1}; // opts = {NULL, 0, (char*)"\n", QOS0, NULL, NULL, (char*)&targetIP, &targetPort, 0}; // version non sécurisé
 
 
 // @brief messageArrived callback function
@@ -173,9 +174,8 @@ int main(void)
 
 	Network n;
 	MQTTClient c;
-
 	NewNetwork(&n, TCP_SOCKET);
-	ConnectNetwork(&n, (char*){34,77,13,55}, targetPort);
+	while(!ConnectNetwork(&n, targetIP, targetPort));
 	MQTTClientInit(&c,&n,1000,buf,100,tempBuffer,2048);
 
 	MQTTPacket_connectData data = MQTTPacket_connectData_initializer;
