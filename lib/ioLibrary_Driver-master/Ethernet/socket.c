@@ -226,7 +226,7 @@ int8_t close(uint8_t sn)
 	setSn_CR(sn,Sn_CR_CLOSE);
 
 	/* wait to process the command... */
-	while( getSn_CR(sn) );
+	while( getSn_SR(sn) );
 	/* clear all interrupt of the socket. */
 	setSn_IR(sn, 0xFF);
 	//A20150401 : Release the sock_io_mode of socket n.
