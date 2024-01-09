@@ -59,8 +59,8 @@ char* topic = "maison";
 #define TCP_SOCKET 0
 
 
-//Receive Buffer Size define
-#define BUFFER_SIZE	16384
+//Receive Buffer Size define of W5500 chip
+#define BUFFER_SIZE 2048
 
 //Global variables
 unsigned char targetBroker[30] = "eseodp.cloud.shiftr.io"; // mqtt server IP
@@ -68,9 +68,9 @@ unsigned char targetIP[4] = {34,77,13,55};
 uint16_t targetPort = 1883; // mqtt server port
 uint8_t mac_address[6] = {0xA8, 0x61, 0x0A, 0xAE, 0x89, 0x43};
 wiz_NetInfo gWIZNETINFO = { .mac = {0xA8, 0x61, 0x0A, 0xAE, 0x89, 0x43}, //user MAC
-							.ip = {172,14,5,5}, //user IP
-							.sn = {},
-							.gw = {},
+							.ip = {172,21,10,237}, //user IP
+							.sn = {255,255,0,0},
+							.gw = {172,21,0,50},
 							.dns = {8,8,8,8},
 							.dhcp = NETINFO_STATIC};
 
@@ -147,7 +147,12 @@ int main(void)
 	Systick_add_callback_function(&process_ms);
 	Systick_add_callback_function(&MilliTimer_Handler);
 
+	// définition de la pin CS du W5500
+	BSP_GPIO_PinCfg(GPIOB, GPIO_PIN_6, GPIO_MODE_OUTPUT_PP,GPIO_NOPULL,GPIO_SPEED_FREQ_HIGH);
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
+
 	SPI_Init(SPI1);
+
 
 
 	int i;
@@ -163,22 +168,22 @@ int main(void)
 	}
 	printf("\n\r");
 
+	//Initialize W5500
+		int8_t RX_TX_BUF_SIZE[] = {2,2,2,2,2,2,2,2};
 
+		int8_t init = wizchip_init(RX_TX_BUF_SIZE, RX_TX_BUF_SIZE);
+
+		if (init == -1) {
+			printf("Wizchip initialize failed.\r\n");
+			while (1);
+		} else {
+			printf("Wizchip initialize success.\r\n");
+		}
 
 	//Set network informations
 	setSHAR(mac_address);
 
 	wizchip_setnetinfo(&gWIZNETINFO);
-
-	int8_t init = wizchip_init(BUFFER_SIZE, BUFFER_SIZE);
-
-	if (init == -1) {
-		printf("Wizchip initialize failed.\r\n");
-		while (1)
-			;
-	} else {
-		printf("Wizchip initialize success.\r\n");
-	}
 
 	Network n;
 	MQTTClient c;

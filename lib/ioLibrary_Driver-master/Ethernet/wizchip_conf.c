@@ -65,7 +65,9 @@
  * null function is called.
  */
 //void 	  wizchip_cris_enter(void)           {};
-void 	  wizchip_cris_enter(void)           {}
+void 	  wizchip_cris_enter(void)           {
+	//HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
+}
 
 /**
  * @brief Default function to disable interrupt.
@@ -73,7 +75,9 @@ void 	  wizchip_cris_enter(void)           {}
  * null function is called.
  */
 //void 	  wizchip_cris_exit(void)          {};
-void 	  wizchip_cris_exit(void)          {}
+void 	  wizchip_cris_exit(void)          {
+	//HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
+}
 
 /**
  * @brief Default function to select chip.
@@ -81,7 +85,9 @@ void 	  wizchip_cris_exit(void)          {}
  * null function is called.
  */
 //void 	wizchip_cs_select(void)            {};
-void 	wizchip_cs_select(void)            {}
+void 	wizchip_cs_select(void)            {
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
+}
 
 /**
  * @brief Default function to deselect chip.
@@ -89,7 +95,9 @@ void 	wizchip_cs_select(void)            {}
  * null function is called.
  */
 //void 	wizchip_cs_deselect(void)          {};
-void 	wizchip_cs_deselect(void)          {}
+void 	wizchip_cs_deselect(void)          {
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
+}
 
 /**
  * @brief Default function to read in direct or indirect interface.
@@ -146,7 +154,7 @@ void 	wizchip_spi_writebyte(uint8_t wb)
 //void 	wizchip_spi_readburst(uint8_t* pBuf, uint16_t len) 	{}; 
 void 	wizchip_spi_readburst(uint8_t* pBuf, uint16_t len)
 {
-	SPI_WriteMultiNoRegister(SPI1, pBuf, len);
+	SPI_ReadMultiNoRegister(SPI1, pBuf, len);
 }
 
 /**
@@ -157,7 +165,7 @@ void 	wizchip_spi_readburst(uint8_t* pBuf, uint16_t len)
 //void 	wizchip_spi_writeburst(uint8_t* pBuf, uint16_t len) {};
 void 	wizchip_spi_writeburst(uint8_t* pBuf, uint16_t len)
 {
-    SPI_ReadMultiNoRegister(SPI1, pBuf, len);
+    SPI_WriteMultiNoRegister(SPI1, pBuf, len);
 }
 
 /**
@@ -195,6 +203,7 @@ _WIZCHIP  WIZCHIP =
         wizchip_cs_deselect
     },
     {
+
         {
             //M20150601 : Rename the function 
             wizchip_spi_readbyte,
@@ -202,7 +211,6 @@ _WIZCHIP  WIZCHIP =
 			wizchip_spi_readburst,
             wizchip_spi_writeburst
         },
-
     }
 };
 

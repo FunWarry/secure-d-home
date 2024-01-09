@@ -224,7 +224,6 @@ int8_t close(uint8_t sn)
    };   
 #endif 
 	setSn_CR(sn,Sn_CR_CLOSE);
-
 	/* wait to process the command... */
 	while( getSn_SR(sn) );
 	/* clear all interrupt of the socket. */
