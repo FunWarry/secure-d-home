@@ -60,7 +60,7 @@ char* topic = "maison";
 
 
 //Receive Buffer Size define
-#define BUFFER_SIZE	2048
+#define BUFFER_SIZE	16384
 
 //Global variables
 unsigned char targetBroker[30] = "eseodp.cloud.shiftr.io"; // mqtt server IP
@@ -170,6 +170,15 @@ int main(void)
 
 	wizchip_setnetinfo(&gWIZNETINFO);
 
+	int8_t init = wizchip_init(BUFFER_SIZE, BUFFER_SIZE);
+
+	if (init == -1) {
+		printf("Wizchip initialize failed.\r\n");
+		while (1)
+			;
+	} else {
+		printf("Wizchip initialize success.\r\n");
+	}
 
 	Network n;
 	MQTTClient c;
