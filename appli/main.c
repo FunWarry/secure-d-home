@@ -1,7 +1,7 @@
 /**
   ******************************************************************************
   * @file    main.c
-  * @author  Nirgal
+  * @author  Mathéo Gevraise
   * @date    03-July-2019
   * @brief   Default main function.
   ******************************************************************************
@@ -180,7 +180,7 @@ int main(void)
 			printf("Wizchip initialize success.\r\n");
 		}
 
-	//Set network informations
+		//Set network informations
 	setSHAR(mac_address);
 
 	wizchip_setnetinfo(&gWIZNETINFO);
