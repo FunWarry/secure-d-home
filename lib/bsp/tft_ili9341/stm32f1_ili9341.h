@@ -149,24 +149,24 @@ VCC          3.3V         Positive power supply
  * @brief  CS PIN for SPI, used as on STM32F429-Discovery board
  */
 #ifndef ILI9341_CS_PIN
-#define ILI9341_CS_PORT       GPIOA
-#define ILI9341_CS_PIN        GPIO_PIN_12
+#define ILI9341_CS_PORT       GPIOB
+#define ILI9341_CS_PIN        GPIO_PIN_11
 #endif
 
 /**
  * @brief  WRX PIN for data/command, used as on STM32F429-Discovery board
  */
 #ifndef ILI9341_WRX_PIN
-#define ILI9341_WRX_PORT      GPIOA
-#define ILI9341_WRX_PIN       GPIO_PIN_8
+#define ILI9341_WRX_PORT      GPIOB
+#define ILI9341_WRX_PIN       GPIO_PIN_1
 #endif
 
 /**
  * @brief  RESET for LCD
  */
 #ifndef ILI9341_RST_PIN
-#define ILI9341_RST_PORT      GPIOA
-#define ILI9341_RST_PIN       GPIO_PIN_9
+#define ILI9341_RST_PORT      GPIOB
+#define ILI9341_RST_PIN       GPIO_PIN_10
 #endif
 
 /* LCD settings */

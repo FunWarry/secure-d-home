@@ -170,18 +170,13 @@ void w5x00_disconnect(Network* n)
  */
 int ConnectNetwork(Network* n, uint8_t* ip, uint16_t port)
 {
-	uint16_t myport = 1883;
-	printf("ConnectNetwork\r\n");
+	uint16_t myport = 12345;
 
 	if(socket(n->my_socket, Sn_MR_TCP, myport, 0) != n->my_socket)
 		return SOCK_ERROR;
 
-	printf("socket\r\n");
-
 	if(connect(n->my_socket, ip, port) != SOCK_OK)
 		return SOCK_ERROR;
-
-	printf("connect\r\n");
 
 	return SOCK_OK;
 }

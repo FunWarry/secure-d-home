@@ -45,15 +45,14 @@ void DHT11_demo(void)
 	static uint8_t temperature_int;
 	static uint8_t temperature_dec;
 
-	DHT11_init(GPIOA, GPIO_PIN_0);
-	while(1)
-	{
 
+	DHT11_init(GPIOB, GPIO_PIN_12);
+	while(1){
 		switch(DHT11_state_machine_get_datas(&humidity_int, &humidity_dec, &temperature_int, &temperature_dec))
 		{
 			case END_OK:
- 				debug_printf("DHT11 h=%d,%d | t=%d,%d\n",humidity_int, humidity_dec, temperature_int, temperature_dec);
- 				HAL_Delay(1500);
+				debug_printf("DHT11 h=%d,%d | t=%d,%d\n",humidity_int, humidity_dec, temperature_int, temperature_dec);
+				HAL_Delay(1500);
 				break;
 			case END_ERROR:
 				debug_printf("DHT11 read error (h=%d,%d | t=%d,%d)\n", humidity_int, humidity_dec, temperature_int, temperature_dec);
@@ -199,7 +198,7 @@ running_e DHT11_state_machine_get_datas(uint8_t * humidity_int, uint8_t * humidi
 			state = WAIT_BEFORE_NEXT_ASK;
 			break;
 		case END_OF_RECEPTION:
-			debug_printf("%llx\n",trame);
+			//debug_printf("%llx\n",trame);
 			if(compute_frame(trame, humidity_int, humidity_dec, temperature_int, temperature_dec))
 				ret = END_OK;
 			else
@@ -225,7 +224,7 @@ static bool_e compute_frame(uint64_t datas, uint8_t * humidity_int, uint8_t * hu
 	*humidity_dec = (uint8_t)(datas >> 24);
 	*temperature_int = (uint8_t)(datas >> 16);
 	*temperature_dec = (uint8_t)(datas >> 8);
-	debug_printf(" - %d+%d+%d+%d = %d (%d) ", *humidity_int, *humidity_dec, *temperature_int, *temperature_dec, (uint8_t)(*humidity_int + *humidity_dec + *temperature_int + *temperature_dec), (uint8_t)(datas));
+	//debug_printf(" - %d+%d+%d+%d = %d (%d) ", *humidity_int, *humidity_dec, *temperature_int, *temperature_dec, (uint8_t)(*humidity_int + *humidity_dec + *temperature_int + *temperature_dec), (uint8_t)(datas));
 	//checksum
 	if((uint8_t)(*humidity_int + *humidity_dec + *temperature_int + *temperature_dec) == (uint8_t)(datas))
 		ret = TRUE;

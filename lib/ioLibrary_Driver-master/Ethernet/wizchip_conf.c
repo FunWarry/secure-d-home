@@ -53,7 +53,6 @@
 //
 
 #include "wizchip_conf.h"
-#include "stm32f1xx_hal.h"
 
 /////////////
 //M20150401 : Remove ; in the default callback function such as wizchip_cris_enter(), wizchip_cs_select() and etc.
@@ -65,9 +64,7 @@
  * null function is called.
  */
 //void 	  wizchip_cris_enter(void)           {};
-void 	  wizchip_cris_enter(void)           {
-	//HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
-}
+void 	  wizchip_cris_enter(void)           {}
 
 /**
  * @brief Default function to disable interrupt.
@@ -75,9 +72,7 @@ void 	  wizchip_cris_enter(void)           {
  * null function is called.
  */
 //void 	  wizchip_cris_exit(void)          {};
-void 	  wizchip_cris_exit(void)          {
-	//HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
-}
+void 	  wizchip_cris_exit(void)          {}
 
 /**
  * @brief Default function to select chip.
@@ -85,9 +80,7 @@ void 	  wizchip_cris_exit(void)          {
  * null function is called.
  */
 //void 	wizchip_cs_select(void)            {};
-void 	wizchip_cs_select(void)            {
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
-}
+void 	wizchip_cs_select(void)            {}
 
 /**
  * @brief Default function to deselect chip.
@@ -95,9 +88,7 @@ void 	wizchip_cs_select(void)            {
  * null function is called.
  */
 //void 	wizchip_cs_deselect(void)          {};
-void 	wizchip_cs_deselect(void)          {
-	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
-}
+void 	wizchip_cs_deselect(void)          {}
 
 /**
  * @brief Default function to read in direct or indirect interface.
@@ -106,10 +97,7 @@ void 	wizchip_cs_deselect(void)          {
  */
  //M20150601 : Rename the function for integrating with W5300
 //uint8_t wizchip_bus_readbyte(uint32_t AddrSel) { return * ((volatile uint8_t *)((ptrdiff_t) AddrSel)); }
-iodata_t wizchip_bus_readdata(uint32_t AddrSel)
-{
-	return * ((volatile iodata_t *)((ptrdiff_t) AddrSel));
-}
+iodata_t wizchip_bus_readdata(uint32_t AddrSel) { return * ((volatile iodata_t *)((ptrdiff_t) AddrSel)); }
 
 /**
  * @brief Default function to write in direct or indirect interface.
@@ -118,11 +106,7 @@ iodata_t wizchip_bus_readdata(uint32_t AddrSel)
  */
 //M20150601 : Rename the function for integrating with W5300
 //void 	wizchip_bus_writebyte(uint32_t AddrSel, uint8_t wb)  { *((volatile uint8_t*)((ptrdiff_t)AddrSel)) = wb; }
-void 	wizchip_bus_writedata(uint32_t AddrSel, iodata_t wb)
-{
-
-	*((volatile iodata_t*)((ptrdiff_t)AddrSel)) = wb;
-}
+void 	wizchip_bus_writedata(uint32_t AddrSel, iodata_t wb)  { *((volatile iodata_t*)((ptrdiff_t)AddrSel)) = wb; }
 
 /**
  * @brief Default function to read in SPI interface.
@@ -130,10 +114,7 @@ void 	wizchip_bus_writedata(uint32_t AddrSel, iodata_t wb)
  * null function is called.
  */
 //uint8_t wizchip_spi_readbyte(void)        {return 0;};
-uint8_t wizchip_spi_readbyte(void)
-{
-	return SPI_ReadNoRegister(SPI1);
-}
+uint8_t wizchip_spi_readbyte(void)        {return 0;}
 
 /**
  * @brief Default function to write in SPI interface.
@@ -141,10 +122,7 @@ uint8_t wizchip_spi_readbyte(void)
  * null function is called.
  */
 //void 	wizchip_spi_writebyte(uint8_t wb) {};
-void 	wizchip_spi_writebyte(uint8_t wb)
-{
-	SPI_WriteNoRegister(SPI1, wb);
-}
+void 	wizchip_spi_writebyte(uint8_t wb) {}
 
 /**
  * @brief Default function to burst read in SPI interface.
@@ -152,10 +130,7 @@ void 	wizchip_spi_writebyte(uint8_t wb)
  * null function is called.
  */
 //void 	wizchip_spi_readburst(uint8_t* pBuf, uint16_t len) 	{}; 
-void 	wizchip_spi_readburst(uint8_t* pBuf, uint16_t len)
-{
-	SPI_ReadMultiNoRegister(SPI1, pBuf, len);
-}
+void 	wizchip_spi_readburst(uint8_t* pBuf, uint16_t len) 	{}
 
 /**
  * @brief Default function to burst write in SPI interface.
@@ -163,10 +138,7 @@ void 	wizchip_spi_readburst(uint8_t* pBuf, uint16_t len)
  * null function is called.
  */
 //void 	wizchip_spi_writeburst(uint8_t* pBuf, uint16_t len) {};
-void 	wizchip_spi_writeburst(uint8_t* pBuf, uint16_t len)
-{
-    SPI_WriteMultiNoRegister(SPI1, pBuf, len);
-}
+void 	wizchip_spi_writeburst(uint8_t* pBuf, uint16_t len) {}
 
 /**
  * @\ref _WIZCHIP instance
@@ -203,14 +175,14 @@ _WIZCHIP  WIZCHIP =
         wizchip_cs_deselect
     },
     {
-
         {
             //M20150601 : Rename the function 
-            wizchip_spi_readbyte,
-            wizchip_spi_writebyte,
-			wizchip_spi_readburst,
-            wizchip_spi_writeburst
+            //wizchip_bus_readbyte,
+            //wizchip_bus_writebyte
+            wizchip_bus_readdata,
+            wizchip_bus_writedata
         },
+
     }
 };
 

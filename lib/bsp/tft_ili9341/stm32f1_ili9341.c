@@ -112,8 +112,8 @@ void ILI9341_demo(void)
 {
 	ILI9341_Init();
 	ILI9341_Rotate(ILI9341_Orientation_Landscape_2);
-//	ILI9341_DisplayOff();
-//	ILI9341_DisplayOn();
+	//ILI9341_DisplayOff();
+	//ILI9341_DisplayOn();
 	ILI9341_Fill(ILI9341_COLOR_WHITE);
 	ILI9341_DrawCircle(20,20,5,ILI9341_COLOR_BLUE);
 	ILI9341_DrawLine(20,20,100,20,ILI9341_COLOR_RED);
@@ -987,6 +987,7 @@ ILI931_Options_t ILI9341_getOptions(void){
  */
 void ILI9341_printf(int16_t x, int16_t y, FontDef_t *font, int16_t foreground, int16_t background, const char *format, ...)
 {
+
 	char buffer[256];
 
 	va_list args_list;
@@ -995,6 +996,7 @@ void ILI9341_printf(int16_t x, int16_t y, FontDef_t *font, int16_t foreground, i
 	va_end(args_list);
 
 	ILI9341_Puts(x, y, buffer, font, foreground, background);
+
 }
 
 /**

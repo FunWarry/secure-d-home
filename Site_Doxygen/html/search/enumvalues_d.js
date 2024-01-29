@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['sik_5fall_0',['SIK_ALL',['../group___d_a_t_a___t_y_p_e.html#ggaa9d536c54137cd7b425c4c1e3cbfd49cab047934b1869746fbc0f144b5a750235',1,'socket.h']]],
+  ['sik_5fconnected_1',['SIK_CONNECTED',['../group___d_a_t_a___t_y_p_e.html#ggaa9d536c54137cd7b425c4c1e3cbfd49ca572b5fc4792b828241e3cb59c95d8162',1,'socket.h']]],
+  ['sik_5fdisconnected_2',['SIK_DISCONNECTED',['../group___d_a_t_a___t_y_p_e.html#ggaa9d536c54137cd7b425c4c1e3cbfd49ca9680dba91346657e5ace550b548e078b',1,'socket.h']]],
+  ['sik_5freceived_3',['SIK_RECEIVED',['../group___d_a_t_a___t_y_p_e.html#ggaa9d536c54137cd7b425c4c1e3cbfd49ca083fdc9e4e60122e9430e00cea78ecba',1,'socket.h']]],
+  ['sik_5fsent_4',['SIK_SENT',['../group___d_a_t_a___t_y_p_e.html#ggaa9d536c54137cd7b425c4c1e3cbfd49ca263f2ee924ce301138f6ff041d539bd2',1,'socket.h']]],
+  ['sik_5ftimeout_5',['SIK_TIMEOUT',['../group___d_a_t_a___t_y_p_e.html#ggaa9d536c54137cd7b425c4c1e3cbfd49ca9932f0ef330402b0f60a08073fd5a753',1,'socket.h']]],
+  ['so_5fdestip_6',['SO_DESTIP',['../group___d_a_t_a___t_y_p_e.html#gga2f86b7ad233f3b8d6ae0af3ee91e9944aedcfb91978540124a81e0302c58bb6d7',1,'socket.h']]],
+  ['so_5fdestport_7',['SO_DESTPORT',['../group___d_a_t_a___t_y_p_e.html#gga2f86b7ad233f3b8d6ae0af3ee91e9944a3429f41e7099b4badca2630c7a5e4f1c',1,'socket.h']]],
+  ['so_5fflag_8',['SO_FLAG',['../group___d_a_t_a___t_y_p_e.html#gga2f86b7ad233f3b8d6ae0af3ee91e9944af21c9fec4a305d9504e0487f7ae7fc26',1,'socket.h']]],
+  ['so_5fmss_9',['SO_MSS',['../group___d_a_t_a___t_y_p_e.html#gga2f86b7ad233f3b8d6ae0af3ee91e9944ae7f6aaf2aaef0519a813b3e26ef9c4fd',1,'socket.h']]],
+  ['so_5fpackinfo_10',['SO_PACKINFO',['../group___d_a_t_a___t_y_p_e.html#gga2f86b7ad233f3b8d6ae0af3ee91e9944af1a89a6cfe6fce7381f825553de1a905',1,'socket.h']]],
+  ['so_5frecvbuf_11',['SO_RECVBUF',['../group___d_a_t_a___t_y_p_e.html#gga2f86b7ad233f3b8d6ae0af3ee91e9944ab30861739974726fb7a170bbac572c22',1,'socket.h']]],
+  ['so_5fremainsize_12',['SO_REMAINSIZE',['../group___d_a_t_a___t_y_p_e.html#gga2f86b7ad233f3b8d6ae0af3ee91e9944ac8e0d12b5a8ee43e5ebe37a39b31988a',1,'socket.h']]],
+  ['so_5fsendbuf_13',['SO_SENDBUF',['../group___d_a_t_a___t_y_p_e.html#gga2f86b7ad233f3b8d6ae0af3ee91e9944a1b0e150a176b12a227d6ab7c294fc05a',1,'socket.h']]],
+  ['so_5fstatus_14',['SO_STATUS',['../group___d_a_t_a___t_y_p_e.html#gga2f86b7ad233f3b8d6ae0af3ee91e9944a3f76c1b04cfc969826bed37a3c4cff06',1,'socket.h']]],
+  ['so_5ftos_15',['SO_TOS',['../group___d_a_t_a___t_y_p_e.html#gga2f86b7ad233f3b8d6ae0af3ee91e9944afef2289d3bfeecda602214576b0a42e3',1,'socket.h']]],
+  ['so_5fttl_16',['SO_TTL',['../group___d_a_t_a___t_y_p_e.html#gga2f86b7ad233f3b8d6ae0af3ee91e9944a69762968a8cae82544deffe1c3ac32cf',1,'socket.h']]],
+  ['spi1_5firqn_17',['SPI1_IRQn',['../group___peripheral__interrupt__number__definition.html#gga7e1129cd8a196f4284d41db3e82ad5c8aacdff1a9c42582ed663214cbe62c1174',1,'stm32f103xb.h']]],
+  ['spi2_5firqn_18',['SPI2_IRQn',['../group___peripheral__interrupt__number__definition.html#gga7e1129cd8a196f4284d41db3e82ad5c8a505fbd4ccf7c2a14c8b76dc9e58f7ede',1,'stm32f103xb.h']]],
+  ['svcall_5firqn_19',['SVCall_IRQn',['../group___peripheral__interrupt__number__definition.html#gga7e1129cd8a196f4284d41db3e82ad5c8a4ce820b3cc6cf3a796b41aadc0cf1237',1,'stm32f103xb.h']]],
+  ['systick_5firqn_20',['SysTick_IRQn',['../group___peripheral__interrupt__number__definition.html#gga7e1129cd8a196f4284d41db3e82ad5c8a6dbff8f8543325f3474cbae2446776e7',1,'stm32f103xb.h']]]
+];

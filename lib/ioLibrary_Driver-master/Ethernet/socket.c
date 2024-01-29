@@ -224,12 +224,13 @@ int8_t close(uint8_t sn)
    };   
 #endif 
 	setSn_CR(sn,Sn_CR_CLOSE);
-	/* wait to process the command... */
-	while( getSn_SR(sn) );
+   /* wait to process the command... */
+	while( getSn_CR(sn) );
 	/* clear all interrupt of the socket. */
 	setSn_IR(sn, 0xFF);
 	//A20150401 : Release the sock_io_mode of socket n.
 	sock_io_mode &= ~(1<<sn);
+	//
 	sock_is_sending &= ~(1<<sn);
 	sock_remained_size[sn] = 0;
 	sock_pack_info[sn] = 0;

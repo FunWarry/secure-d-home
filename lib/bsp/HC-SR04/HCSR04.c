@@ -13,6 +13,7 @@
 #include "stm32f1_timer.h"
 #include "stm32f1_gpio.h"
 #include "stm32f1_extit.h"
+#include "tft_ili9341/stm32f1_ili9341.h"
 
 #ifndef HCSR04_NB_SENSORS
 	#define HCSR04_NB_SENSORS	5
@@ -93,59 +94,59 @@ void HCSR04_demo_state_machine(void)
 	static uint8_t id_sensor;
 	uint16_t distance;
 
-	//ne pas oublier d'appeler en tâche de fond cette fonction.
-	HCSR04_process_main();
+		//ne pas oublier d'appeler en tâche de fond cette fonction.
+		HCSR04_process_main();
+		switch(state)
+		{
+			case INIT:
+				if(HCSR04_add(&id_sensor, GPIOB, GPIO_PIN_7, GPIOB, GPIO_PIN_6) != HAL_OK)
+				{
+					printf("HCSR04 non ajouté - erreur gênante\n");
+					state = FAIL;
+				}
+				else
+				{
+					printf("HCSR04 ajouté\n");
+					state = LAUNCH_MEASURE;
+				}
+				break;
+			case LAUNCH_MEASURE:
+				HCSR04_run_measure(id_sensor);
+				tlocal = HAL_GetTick();
+				state = WAIT_DURING_MEASURE;
+				break;
+			case WAIT_DURING_MEASURE:
+				switch(HCSR04_get_value(id_sensor, &distance))
+				{
+					case HAL_BUSY:
+						//rien à faire... on attend...
+						break;
+					case HAL_OK:
+						printf("sensor %d - distance : %d\n", id_sensor, distance);
+						state = WAIT_BEFORE_NEXT_MEASURE;
+						ILI9341_printf(25, 240, &Font_11x18, ILI9341_COLOR_BROWN, ILI9341_COLOR_WHITE, "sensor %d - distance : %d\n", id_sensor, distance);
+						break;
+					case HAL_ERROR:
+						printf("sensor %d - erreur ou mesure non lancée\n", id_sensor);
+						state = WAIT_BEFORE_NEXT_MEASURE;
+						ILI9341_printf(25, 240, &Font_11x18, ILI9341_COLOR_BROWN, ILI9341_COLOR_WHITE, "sensor %d - erreur ou mesure non lancée\n", id_sensor);
+						break;
+					case HAL_TIMEOUT:
+						printf("sensor %d - timeout\n", id_sensor);
+						state = WAIT_BEFORE_NEXT_MEASURE;
+						ILI9341_printf(25, 240, &Font_11x18, ILI9341_COLOR_BROWN, ILI9341_COLOR_WHITE, "sensor %d - timeout\n", id_sensor);
+						break;
+				}
+				break;
+			case WAIT_BEFORE_NEXT_MEASURE:
+				if(HAL_GetTick() > tlocal + PERIOD_MEASURE)
+					state = LAUNCH_MEASURE;
+				break;
+			default:
+				break;
+		}
 
-
-	switch(state)
-	{
-		case INIT:
-			if(HCSR04_add(&id_sensor, GPIOC, GPIO_PIN_7, GPIOB, GPIO_PIN_6) != HAL_OK)
-			{
-				printf("HCSR04 non ajouté - erreur gênante\n");
-				state = FAIL;
-			}
-			else
-			{
-				printf("HCSR04 ajouté\n");
-				state = LAUNCH_MEASURE;
-			}
-			break;
-		case LAUNCH_MEASURE:
-			HCSR04_run_measure(id_sensor);
-			tlocal = HAL_GetTick();
-			state = WAIT_DURING_MEASURE;
-			break;
-		case WAIT_DURING_MEASURE:
-			switch(HCSR04_get_value(id_sensor, &distance))
-			{
-				case HAL_BUSY:
-					//rien à faire... on attend...
-					break;
-				case HAL_OK:
-					printf("sensor %d - distance : %d\n", id_sensor, distance);
-					state = WAIT_BEFORE_NEXT_MEASURE;
-					break;
-				case HAL_ERROR:
-					printf("sensor %d - erreur ou mesure non lancée\n", id_sensor);
-					state = WAIT_BEFORE_NEXT_MEASURE;
-					break;
-
-				case HAL_TIMEOUT:
-					printf("sensor %d - timeout\n", id_sensor);
-					state = WAIT_BEFORE_NEXT_MEASURE;
-					break;
-			}
-			break;
-		case WAIT_BEFORE_NEXT_MEASURE:
-			if(HAL_GetTick() > tlocal + PERIOD_MEASURE)
-				state = LAUNCH_MEASURE;
-			break;
-		default:
-			break;
-	}
 }
-
 /*
  * @pre	il ne peut pas y avoir plusieurs capteurs sur un même numéro de broche (par exemple PA0 et PB0 !)
  */

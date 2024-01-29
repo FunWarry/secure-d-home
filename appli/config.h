@@ -9,7 +9,7 @@
 #define CONFIG_H_
 #include "stm32f1xx_hal.h"
 
-//Choix de la cible utilisée
+//Choix de la cible utilisée.
 #define NUCLEO	0
 #define BLUEPILL 1
 
@@ -77,7 +77,7 @@
 	#define USE_AN6			1	//Broche correspondante : PA6	//MISO
 	#define USE_AN7			1	//Broche correspondante : PA7	//MOSI
 	#define USE_AN8			1	//Broche correspondante : PB0	//Photorésistance
-	#define USE_AN9			1	//Broche correspondante : PB1	//TFT DC
+	#define USE_AN9			0	//Broche correspondante : PB1	//TFT DC
 	#define USE_AN10		0	//Broche correspondante : PC0	//Sur la Bluepill, cette broche n'est pas câblée !
 	#define USE_AN11		0	//Broche correspondante : PC1	//Sur la Bluepill, cette broche n'est pas câblée !
 	#define USE_AN12		0	//Broche correspondante : PC2	//Sur la Bluepill, cette broche n'est pas câblée !
@@ -92,8 +92,8 @@
 	#if USE_SCREEN_TFT_ILI9341
 		#define USE_XPT2046			0	//Tactile
 
-		#define USE_FONT11x18		0
-		#define USE_FONT7x10		1
+		#define USE_FONT11x18		1
+		#define USE_FONT7x10		0
 		#define USE_FONT16x26		0
 
 		#if BLUEPILL					//Définition des broches CS, WRX et RST pour la BLUEPILL

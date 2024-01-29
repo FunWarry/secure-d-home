@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['value_0',['Default Timeout Value',['../group___r_t_c___timeout___value.html',1,'']]],
+  ['values_1',['values',['../group___l_s_m6_d_s3___p_e_d_o_m_e_t_e_r___t_h_r_e_s_h_o_l_d.html',1,'Pedometer threshold values'],['../group___l_s_m6_d_s3___t_a_p___d_u_r_a_t_i_o_n___t_i_m_e.html',1,'Tap duration time window values'],['../group___l_s_m6_d_s3___t_a_p___q_u_i_e_t___t_i_m_e.html',1,'Tap quiet time window values'],['../group___l_s_m6_d_s3___t_a_p___s_h_o_c_k___t_i_m_e.html',1,'Tap shock time window values'],['../group___l_s_m6_d_s3___t_a_p___t_h_r_e_s_h_o_l_d.html',1,'Tap threshold values'],['../group___l_s_m6_d_s3___w_a_k_e___u_p___t_h_r_e_s_h_o_l_d.html',1,'Wake up threshold values']]],
+  ['values_20based_20on_20selected_20full_20scale_2',['values based on selected full scale',['../group___l_s_m6_d_s0___a_c_c___s_e_n_s_i_t_i_v_i_t_y.html',1,'Accelero sensitivity values based on selected full scale'],['../group___l_s_m6_d_s3___a_c_c___s_e_n_s_i_t_i_v_i_t_y.html',1,'Accelero sensitivity values based on selected full scale'],['../group___l_s_m6_d_s0___g_y_r_o___s_e_n_s_i_t_i_v_i_t_y.html',1,'Gyro sensitivity values based on selected full scale'],['../group___l_s_m6_d_s3___g_y_r_o___s_e_n_s_i_t_i_v_i_t_y.html',1,'Gyro sensitivity values based on selected full scale'],['../group___l_i_s3_m_d_l___s_e_n_s_i_t_i_v_i_t_y.html',1,'Sensitivity values based on selected full scale']]],
+  ['variables_3',['HAL Private Variables',['../group___h_a_l___private___variables.html',1,'']]],
+  ['variables_4',['variables',['../group___h_t_s221___public___variables.html',1,'Public variables'],['../group___l_i_s3_m_d_l___public___variables.html',1,'Public variables'],['../group___l_p_s22_h_b___public___variables.html',1,'Public variables'],['../group___l_p_s25_h_b___public___variables.html',1,'Public variables'],['../group___l_s_m6_d_s0___public___variables.html',1,'Public variables'],['../group___l_s_m6_d_s3___public___variables.html',1,'Public variables']]],
+  ['vcsel_20period_20defines_5',['Vcsel Period Defines',['../group___v_l53_l0_x__define___vcsel_period__group.html',1,'']]],
+  ['vector_20clarke_20transform_6',['Vector Clarke Transform',['../group__clarke.html',1,'']]],
+  ['vector_20inverse_20clarke_20transform_7',['Vector Inverse Clarke Transform',['../group__inv__clarke.html',1,'']]],
+  ['vector_20inverse_20park_20transform_8',['Vector Inverse Park transform',['../group__inv__park.html',1,'']]],
+  ['vector_20park_20transform_9',['Vector Park Transform',['../group__park.html',1,'']]],
+  ['vectored_20interrupt_20controller_20nvic_10',['Nested Vectored Interrupt Controller (NVIC)',['../group___c_m_s_i_s___n_v_i_c.html',1,'']]],
+  ['verification_11',['verification',['../group___a_d_c__range__verification.html',1,'ADC range verification'],['../group___a_d_c__regular__discontinuous__mode__number__verification.html',1,'ADC regular discontinuous mode number verification'],['../group___a_d_c__regular__nb__conv__verification.html',1,'ADC regular nb conv verification'],['../group___a_d_c_ex__injected__nb__conv__verification.html',1,'ADCEx injected nb conv verification']]],
+  ['vl053l0a1_20debugging_12',['VL053L0A1  debugging',['../group___x_n_u_c_l_e_o53_l0_a1___debugging.html',1,'']]],
+  ['vl53l0a1_20static_20configuration_13',['VL53L0A1 static configuration',['../group___v_l53_l0_a1__config.html',1,'']]],
+  ['vl53l0x_20cut1_201_20device_20specific_20defines_14',['VL53L0X cut1.1 Device Specific Defines',['../group___v_l53_l0_x___dev_spec_defines__group.html',1,'']]],
+  ['vl53l0x_20cut1_201_20function_20definition_15',['VL53L0X cut1.1 Function Definition',['../group___v_l53_l0_x__cut11__group.html',1,'']]],
+  ['vl53l0x_20defines_16',['VL53L0X Defines',['../group___v_l53_l0_x__globaldefine__group.html',1,'']]],
+  ['vl53l0x_20general_20functions_17',['VL53L0X General Functions',['../group___v_l53_l0_x__general__group.html',1,'']]],
+  ['vl53l0x_20init_20functions_18',['VL53L0X Init Functions',['../group___v_l53_l0_x__init__group.html',1,'']]],
+  ['vl53l0x_20interrupt_20functions_19',['VL53L0X Interrupt Functions',['../group___v_l53_l0_x__interrupt__group.html',1,'']]],
+  ['vl53l0x_20measurement_20functions_20',['VL53L0X Measurement Functions',['../group___v_l53_l0_x__measurement__group.html',1,'']]],
+  ['vl53l0x_20parameters_20functions_21',['VL53L0X Parameters Functions',['../group___v_l53_l0_x__parameters__group.html',1,'']]],
+  ['vl53l0x_20platform_20functions_22',['VL53L0X Platform Functions',['../group___v_l53_l0_x__platform__group.html',1,'']]],
+  ['vl53l0x_20spad_20functions_23',['VL53L0X SPAD Functions',['../group___v_l53_l0_x___s_p_a_dfunctions__group.html',1,'']]]
+];
